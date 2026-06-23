@@ -1,12 +1,15 @@
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, func
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.dialects.postgresql import JSONB
+from datetime import datetime, timezone
 
 Base = declarative_base()
 
 # TABLE DEFINITIONS:
 class Player(Base):
     __tablename__ = "players"
+    id = Column(Integer, primary_key=True)
+    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
     stats_json = Column(JSONB,
                         nullable = False)
     career_length = Column(Integer,
