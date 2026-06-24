@@ -86,6 +86,3 @@ url = 'https://www.basketball-reference.com/players/c/chambwi01.html'
 url2 = 'https://www.basketball-reference.com/players/a/anderbo01.html'
 
 url3 = 'https://www.basketball-reference.com/players/c/curryde01.html'
-
-if __name__ == '__main__':
-    print(scrape_site(url2)[5])
