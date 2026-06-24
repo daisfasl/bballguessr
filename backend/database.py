@@ -33,12 +33,11 @@ def save_player(stats_dict, career_length, img_url, career_start_year, name, bba
                        "career_length": stmt.excluded.career_length,
                        "img_url": stmt.excluded.img_url,
                        "stats_json": stmt.excluded.stats_json}
-    upsert_stmt = stmt.on_conflict_do_update(index_elements = "basketball_reference_id",
+    upsert_stmt = stmt.on_conflict_do_update(index_elements = ["basketball_reference_id"],
                                              set_ = updated_columns)
     with get_connection() as db:
-        res = db.execute(stmt)
-        print(f"Saved player: {bball_ref_id}")
-        return 
+        res = db.execute(upsert_stmt)
+        return bball_ref_id
     
 @contextmanager
 def get_connection():
@@ -57,3 +56,4 @@ def initialize_database():
 
 if __name__ == "__main__":
     initialize_database()
+    print("Database initialized!")
