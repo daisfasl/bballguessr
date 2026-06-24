@@ -3,7 +3,7 @@ from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import sessionmaker
 from dotenv import load_dotenv
 import os
-from .models import Base, Player
+from models import Base, Player
 from contextlib import contextmanager
 
 # load hidden DATABASE_URL from .env file
