@@ -8,6 +8,11 @@ Base = declarative_base()
 # TABLE DEFINITIONS:
 class Player(Base):
     __tablename__ = "players"
+    basketball_reference_id = Column(String(100), 
+                                     unique = True,
+                                     nullable = False)
+    name = Column(String(255),
+                  nullable = False)
     id = Column(Integer, primary_key=True)
     created_at = Column(DateTime,
                         default = func.now())
@@ -21,9 +26,4 @@ class Player(Base):
     img_url = Column(String(255))
     career_start_year = Column(Integer,
                                nullable = False)
-    name = Column(String(255),
-                  nullable = False)
-    basketball_reference_id = Column(String(100), 
-                                     unique = True,
-                                     nullable = False)
 

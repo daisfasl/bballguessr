@@ -18,15 +18,14 @@ SessionLocal = sessionmaker(autocommit = False, autoflush = False, bind = engine
 ## autoflush = False as in case of crash, wont mess up scraper ##
 
 
-def save_player(stats_dict, career_length, img_url, career_start_year, name, bball_ref_id):
+def save_player(bball_ref_id, stats_dict, career_length, img_url, career_start_year, name):
     stmt = insert(Player).values(
+            basketball_reference_id = bball_ref_id,
             stats_json = stats_dict,
             career_length = career_length,
             img_url = img_url,
             career_start_year = career_start_year,
-            name = name,
-            basketball_reference_id = bball_ref_id)
-    
+            name = name)
     # if theres a conflict, replace columns with new values
     updated_columns = {"name": stmt.excluded.name,
                        "career_start_year": stmt.excluded.career_start_year,
