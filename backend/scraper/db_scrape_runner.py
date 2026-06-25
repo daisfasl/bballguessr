@@ -31,7 +31,7 @@ def scrape_runner(chars: list[str]):
                 if not name_header:
                     continue
                 player_name = name_header.get('data-append-csv') 
-                player_url = f"{char_url}/{player_name}"
+                player_url = f"{char_url}{player_name}.html"
 
                 # save to db!!
                 player_to_db(player_url)
