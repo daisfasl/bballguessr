@@ -73,7 +73,8 @@ def get_player_stats(table) -> dict:
 
 def get_career_length(table) -> int:
     tfoot = table.find('tfoot') 
-    extracted_text = tfoot.find('th').getText()
+    tr = tfoot.find('tr', id = True)
+    extracted_text = tr.find('th').getText()
     career_length = re.search(r'\d+', extracted_text)
     if not career_length:
         raise ValueError("Unable to find career length")
@@ -92,6 +93,6 @@ url = 'https://www.basketball-reference.com/players/c/chambwi01.html'
 url2 = 'https://www.basketball-reference.com/players/a/anderbo01.html'
 
 url3 = 'https://www.basketball-reference.com/players/c/curryde01.html'
-
+url4 = 'https://www.basketball-reference.com/players/a/arizatr01.html'
 if __name__ == "__main__":
-    print(scrape_site(url3))
+    print(scrape_site(url4))
