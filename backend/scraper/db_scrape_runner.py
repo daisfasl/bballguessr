@@ -11,7 +11,9 @@ def scrape_runner(chars: list[str]):
         try: # get all rows
             headers = {"User-Agent": "Mozilla/5.0"}
             response = requests.get(char_url, headers=headers)
-            soup = BeautifulSoup(response.content, 'html-parser')
+            time.sleep(3.2) # rate-limit prevention
+
+            soup = BeautifulSoup(response.content, 'html.parser')
             table = soup.find('table', id= 'players')
             tbody = table.find('tbody') # type: ignore
             rows = tbody.find_all('tr') # type: ignore
@@ -26,9 +28,14 @@ def scrape_runner(chars: list[str]):
                 continue 
             else:
                 name_header = row.find('th')
-                player_name = name_header.get('data-append-csv') # type: ignore
+                if not name_header:
+                    continue
+                player_name = name_header.get('data-append-csv') 
                 player_url = f"{char_url}/{player_name}"
+
+                # save to db!!
                 player_to_db(player_url)
+                time.sleep(3.2) # rate-limit prevention
 
     
 # scrape single player to db
@@ -45,4 +52,4 @@ def player_to_db(url) -> bool:
         return False
 
 if __name__ == "__main__":
-    
+    scrape_runner(['a'])
