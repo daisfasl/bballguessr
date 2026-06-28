@@ -51,5 +51,16 @@ def player_to_db(url) -> bool:
         print(f"Scraping {player[4]} failed")
         return False
 
+arr = ["https://www.basketball-reference.com/players/a/abdulka01.html",
+       "https://www.basketball-reference.com/players/a/allenra02.html",
+       "https://www.basketball-reference.com/players/a/anderch01.html",
+       "https://www.basketball-reference.com/players/a/anderke01.html",
+       "https://www.basketball-reference.com/players/a/anthoca01.html",
+       "https://www.basketball-reference.com/players/a/arizatr01.html",
+       "https://www.basketball-reference.com/players/a/augusdj01.html",
+       "https://www.basketball-reference.com/players/p/pendeje02.html",
+       ]
+letters = ['b','c','d','e','f','g','h','i','j','k','l','m','n','o','p',
+           'q','r','s','t','u','v','w','x','y','z']
 if __name__ == "__main__":
-    scrape_runner(['a'])
+    scrape_runner(letters)
