@@ -34,12 +34,12 @@ def save_player(bball_ref_id, stats_dict, career_length, img_url, career_start_y
                        "stats_json": stmt.excluded.stats_json}
     upsert_stmt = stmt.on_conflict_do_update(index_elements = ["basketball_reference_id"],
                                              set_ = updated_columns)
-    with get_connection() as db:
+    with get_db() as db:
         res = db.execute(upsert_stmt)
         return bball_ref_id
     
 @contextmanager
-def get_connection():
+def get_db():
     session = SessionLocal()
     try:
         yield session

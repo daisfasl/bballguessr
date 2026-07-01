@@ -1,4 +1,4 @@
-from backend.database import get_connection, save_player
+from backend.database import save_player
 import backend.scraper.scraper as scraper
 import time 
 import requests
