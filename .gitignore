@@ -6,3 +6,6 @@ env/
 # Python cache folders
 __pycache__/
 *.pyc
+
+# other files
+db_edit.py
