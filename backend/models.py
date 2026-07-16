@@ -26,4 +26,4 @@ class Player(Base):
     img_url = Column(String(255))
     career_start_year = Column(Integer,
                                nullable = False)
-
+    
