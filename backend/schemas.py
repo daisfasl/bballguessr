@@ -1,8 +1,7 @@
-from pydantic import BaseModel, Json
+from pydantic import BaseModel, Json, Field
 from datetime import datetime
-from typing import Literal
+from typing import Literal, Annotated, Dict
 
-from backend.models import Base
 
 class Player(BaseModel):
     basketball_reference_id: str
@@ -30,3 +29,10 @@ class GameStateResponse(BaseModel):
     current_round: Literal[1,2,3,4,5]
     guesses_remaining: Literal[0,1,2,3]
     game_over: bool
+
+
+class RoundStatsResponse(BaseModel):
+    stats_json: dict
+
+class AutocompleteResponse(BaseModel):
+    players: Annotated[Dict[str, int], Field(min_length = 0, max_length = 5)]

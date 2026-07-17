@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import select, func
 from backend.database import get_db
 from backend.models import Player
-from backend.schemas import GuessResponse, GameStateResponse
+from backend.schemas import GuessResponse, GameStateResponse, RoundStatsResponse
 from typing import Literal
 import secrets 
 import string
@@ -51,11 +51,11 @@ def get_game_state(game_id: str):
                             detail= "unable to find game_id in sessions")
 
 @router.get("/{game_id}/stat_table")
-def get_table(game_id: str):
+def get_round_stats(game_id: str):
     game = sessions.get(game_id, None)
     if game:
         curr_round = str(game.get("current_round"))
-        return game[curr_round]["stats_json"]
+        return RoundStatsResponse(stats_json=game[curr_round]["stats_json"])
     else:
         raise HTTPException(status_code= status.HTTP_404_NOT_FOUND,
                             detail= "unable to find game_id in sessions")
