@@ -1,6 +1,6 @@
 import type {GuessResponse, GameStateResponse, RoundStatsResponse, AutocompleteResponse} from "./types"
 
-const BASE = "/api"
+const BASE = "http://localhost:8000/api"
 
 export async function startGame(): Promise<string> {
   const res = await fetch(`${BASE}/game/start`, { method: "POST" })

@@ -1,15 +1,15 @@
-import './App.css'
-import {useState, useEffect} from 'react'
-import {startGame} from './api.ts'
+import {useState} from 'react'
+import {startGame} from '../api.ts'
 
-function App() {
+export function Home() {
     return (
-        <div>
-            <p> Hello World </p>
-            <StartGameButton/>
+        <div className="Home-page">
+            <StartGameButton/>     
         </div>
     )
 }
+
+
 
 function StartGameButton() {
     const [game, setGame] = useState(false)
@@ -33,4 +33,3 @@ function StartGameButton() {
         </div>
     );
 }
-export default App
