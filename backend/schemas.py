@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Json, Field
 from datetime import datetime
-from typing import Literal, Annotated, Dict
+from typing import Literal, Annotated, List
 
 
 class Player(BaseModel):
@@ -17,12 +17,18 @@ class Player(BaseModel):
 class Message(BaseModel):
     message: str
 
+class RevealedPlayer(BaseModel):
+    name: str
+    img_url: str | None
+    basketball_reference_id: str
+
 class GuessResponse(BaseModel):
     last_guess: bool
     current_score: int
     current_round: Literal[1,2,3,4,5]
     guesses_remaining: Literal[0,1,2,3]
     game_over: bool
+    revealed_player: RevealedPlayer | None = None
 
 class GameStateResponse(BaseModel):
     current_score: int
@@ -34,5 +40,9 @@ class GameStateResponse(BaseModel):
 class RoundStatsResponse(BaseModel):
     stats_json: dict
 
+class PlayerMatch(BaseModel):
+    name: str
+    basketball_reference_id: str
+
 class AutocompleteResponse(BaseModel):
-    players: Annotated[Dict[str, int], Field(min_length = 0, max_length = 5)]
+    players: Annotated[List[PlayerMatch], Field(min_length = 0, max_length = 5)]

@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import select, func
 from backend.database import get_db
 from backend.models import Player
-from backend.schemas import GuessResponse, GameStateResponse, RoundStatsResponse
+from backend.schemas import GuessResponse, GameStateResponse, RoundStatsResponse, RevealedPlayer
 from typing import Literal
 import secrets 
 import string
@@ -61,7 +61,7 @@ def get_round_stats(game_id: str):
                             detail= "unable to find game_id in sessions")
 
 
-@router.post("/{game_id}/{round_num}/guess/{basketball_reference_id}")
+@router.post("/{game_id}/guess/{basketball_reference_id}")
 def guess(game_id: str, basketball_reference_id: str):
     game = sessions.get(game_id, None)
     if game:
@@ -71,9 +71,13 @@ def guess(game_id: str, basketball_reference_id: str):
         round_num = str(game.get("current_round"))
         game[round_num]["guesses_remaining"] -= 1
         guesses_remaining = game[round_num]["guesses_remaining"]
+        round_player = game[round_num]
 
-        if game.get(round_num , None).get("basketball_reference_id", None) == basketball_reference_id:
+        if round_player.get("basketball_reference_id", None) == basketball_reference_id:
             game["current_score"] += guesses_remaining + 1
+            revealed_player = RevealedPlayer(name=round_player["name"],
+                                             img_url=round_player.get("img_url"),
+                                             basketball_reference_id=round_player["basketball_reference_id"])
             if game["current_round"] == 5:
                 game["game_over"] = True
             else:
@@ -83,9 +87,14 @@ def guess(game_id: str, basketball_reference_id: str):
                                  current_score= game["current_score"],
                                  current_round=game["current_round"],
                                  guesses_remaining=guesses_remaining,
-                                 game_over=game["game_over"])
+                                 game_over=game["game_over"],
+                                 revealed_player=revealed_player)
         else:
+            revealed_player = None
             if guesses_remaining == 0:
+                revealed_player = RevealedPlayer(name=round_player["name"],
+                                                 img_url=round_player.get("img_url"),
+                                                 basketball_reference_id=round_player["basketball_reference_id"])
                 if game["current_round"] == 5:
                     game["game_over"] = True
                 else:
@@ -94,7 +103,8 @@ def guess(game_id: str, basketball_reference_id: str):
                                  current_score= game["current_score"],
                                  current_round=game["current_round"],
                                  guesses_remaining=guesses_remaining,
-                                 game_over=game["game_over"])
+                                 game_over=game["game_over"],
+                                 revealed_player=revealed_player)
     else:
         raise HTTPException(status_code= status.HTTP_404_NOT_FOUND,
                             detail= "unable to find game_id in sessions")
