@@ -18,16 +18,16 @@ export async function getGameState(gameId: string): Promise<GameStateResponse> {
   return await res.json() as GameStateResponse
 }
 
-export async function getRoundStats(gameId: string, round: number): Promise<RoundStatsResponse> {
-  const res = await fetch(`${BASE}/game/${gameId}/${round}`)
+export async function getRoundStats(gameId: string): Promise<RoundStatsResponse> {
+  const res = await fetch(`${BASE}/game/${gameId}/stat_table`)
   if (!res.ok) {
       throw new Error()
   }
   return await res.json() as RoundStatsResponse
 }
 
-export async function guessPlayer(gameId: string, round: number, playerId: string): Promise<GuessResponse> {
-  const res = await fetch(`${BASE}/game/${gameId}/${round}/guess/${playerId}`, { method: "POST" })
+export async function guessPlayer(gameId: string, playerId: string): Promise<GuessResponse> {
+  const res = await fetch(`${BASE}/game/${gameId}/guess/${playerId}`, { method: "POST" })
   if (!res.ok) {
       throw new Error()
   }

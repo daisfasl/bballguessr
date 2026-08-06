@@ -1,0 +1,63 @@
+:root {
+    --bg: #f4f3f1;
+    --paper: #ffffff;
+    --ink: #111111;
+    --muted: #6b6b6b;
+    --rule: #dcd9d4;
+
+    --font-display: "Playfair Display", Georgia, serif;
+    --font-body: "Inter", system-ui, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+#root {
+    min-height: 100vh;
+}
+
+a {
+    color: inherit;
+}
+
+button, input {
+    font-family: inherit;
+    color: inherit;
+}
+
+.label {
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+.display {
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1.05;
+    margin: 0;
+}
+
+.rule {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 0;
+}

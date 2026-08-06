@@ -1,36 +1,19 @@
-import './App.css'
-import {useState, useEffect} from 'react'
-import {startGame} from './api.ts'
+import './css/App.css'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { Home } from './pages/home'
+import { GameScreen } from './pages/GameScreen'
 
 function App() {
     return (
-        <div>
-            <p> Hello World </p>
-            <StartGameButton/>
-        </div>
+        <BrowserRouter>
+            <div className="App">
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/game/:gameId" element={<GameScreen />} />
+                </Routes>
+            </div>
+        </BrowserRouter>
     )
 }
 
-function StartGameButton() {
-    const [game, setGame] = useState(false)
-    const [gameID, setGameID] = useState("")
-    const handleClick = async () => {
-        const state = await startGame()
-        setGameID(state)
-        if (gameID !== "") {
-            setGame(true)
-        } else {
-            setGame(false)
-        }
-    };
-    return (
-        <div>
-            <p> Game ID: {gameID} </p>
-            <p> {game ? "Game has started" : "Game has not started"} </p>
-            <button onClick= {handleClick}> 
-            goob
-            </button>
-        </div>
-    );
-}
 export default App
