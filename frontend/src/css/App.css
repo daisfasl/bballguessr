@@ -7,3 +7,146 @@
     margin: 0 auto;
     padding: 3rem 1.5rem 4rem;
 }
+
+/* ScoreHUD */
+.ScoreHUD {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--rule);
+}
+
+.ScoreHUD-dots {
+    display: flex;
+    gap: 0.4rem;
+    align-items: center;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.dot-filled {
+    background: var(--ink);
+}
+
+.dot-empty {
+    background: transparent;
+    border: 1px solid var(--muted);
+}
+
+/* StatsTable */
+.StatsTable-scroll {
+    overflow-x: auto;
+    margin: 2rem 0;
+    border-top: 1px solid var(--rule);
+}
+
+.StatsTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.StatsTable th {
+    text-align: left;
+    padding: 0.75rem 0.9rem;
+    border-bottom: 1px solid var(--rule);
+}
+
+.StatsTable td {
+    padding: 0.6rem 0.9rem;
+    border-bottom: 1px solid var(--rule);
+}
+
+.StatsTable tr:last-child td {
+    border-bottom: none;
+}
+
+/* PlayerAutocompleteInput */
+.PlayerAutocompleteInput {
+    position: relative;
+    max-width: 420px;
+}
+
+.PlayerAutocompleteInput-field {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    border: 1px solid var(--ink);
+    background: var(--paper);
+    font-size: 1rem;
+}
+
+.PlayerAutocompleteInput-field:disabled {
+    opacity: 0.5;
+}
+
+.PlayerAutocompleteInput-dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    z-index: 10;
+}
+
+.PlayerAutocompleteInput-dropdown li button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 0.7rem 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+
+.PlayerAutocompleteInput-dropdown li button:hover {
+    background: var(--bg);
+}
+
+/* RoundReveal */
+.RoundReveal {
+    text-align: center;
+    padding: 3rem 1rem;
+}
+
+.RoundReveal-img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin: 1rem 0;
+    filter: grayscale(1);
+}
+
+.RoundReveal-name {
+    font-size: 2.4rem;
+    margin: 0.5rem 0 1.5rem;
+}
+
+.RoundReveal-continue {
+    padding: 0.8rem 2rem;
+    background: var(--ink);
+    color: var(--bg);
+    border: none;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.RoundReveal-continue:hover {
+    opacity: 0.85;
+}
