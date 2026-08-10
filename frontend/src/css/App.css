@@ -8,6 +8,52 @@
     padding: 3rem 1.5rem 4rem;
 }
 
+/* Home */
+.Home-page {
+    padding-top: 6rem;
+    max-width: 640px;
+}
+
+.Home-title {
+    font-size: 4.5rem;
+    margin: 1rem 0 2rem;
+}
+
+.Home-rule {
+    margin-bottom: 2rem;
+}
+
+.Home-desc {
+    color: var(--muted);
+    max-width: 420px;
+    margin-bottom: 2.5rem;
+}
+
+.Home-start {
+    padding: 0.9rem 2.2rem;
+    background: var(--ink);
+    color: var(--bg);
+    border: none;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.Home-start:hover {
+    opacity: 0.85;
+}
+
+.Home-start:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.Home-error {
+    margin-top: 1rem;
+    color: var(--ink);
+}
+
 /* ScoreHUD */
 .ScoreHUD {
     display: flex;

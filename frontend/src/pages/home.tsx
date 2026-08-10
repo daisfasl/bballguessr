@@ -1,35 +1,39 @@
-import {useState} from 'react'
-import {startGame} from '../api.ts'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { startGame } from '../api'
 
 export function Home() {
+    const navigate = useNavigate()
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(false)
+
+    const handleStart = async () => {
+        setLoading(true)
+        setError(false)
+        try {
+            const gameId = await startGame()
+            navigate(`/game/${gameId}`)
+        } catch {
+            setError(true)
+            setLoading(false)
+        }
+    }
+
     return (
-        <div className="Home-page">
-            <StartGameButton/>     
+        <div className="page Home-page">
+            <span className="label">Portrait</span>
+            <h1 className="display Home-title">
+                guess the<br />player.
+            </h1>
+            <hr className="rule Home-rule" />
+            <p className="Home-desc">
+                Five NBA players. Only their basketball-reference stat lines to go on.
+                Three guesses each round.
+            </p>
+            <button type="button" className="Home-start" onClick={handleStart} disabled={loading}>
+                {loading ? 'Starting…' : 'Start game'}
+            </button>
+            {error && <p className="label Home-error">Couldn't start a game — try again.</p>}
         </div>
     )
-}
-
-
-
-function StartGameButton() {
-    const [game, setGame] = useState(false)
-    const [gameID, setGameID] = useState("")
-    const handleClick = async () => {
-        const state = await startGame()
-        setGameID(state)
-        if (gameID !== "") {
-            setGame(true)
-        } else {
-            setGame(false)
-        }
-    };
-    return (
-        <div>
-            <p> Game ID: {gameID} </p>
-            <p> {game ? "Game has started" : "Game has not started"} </p>
-            <button onClick= {handleClick}> 
-            goob
-            </button>
-        </div>
-    );
 }
