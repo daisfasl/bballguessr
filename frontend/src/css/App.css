@@ -54,6 +54,28 @@
     color: var(--ink);
 }
 
+/* GameScreen */
+.GameScreen-wrong {
+    margin-top: 1rem;
+}
+
+/* GameOver */
+.GameOver {
+    text-align: center;
+    padding-top: 6rem;
+}
+
+.GameOver-score {
+    font-size: 6rem;
+    margin: 1rem 0 0.5rem;
+}
+
+.GameOver-again {
+    display: inline-block;
+    margin-top: 2.5rem;
+    text-decoration: none;
+}
+
 /* ScoreHUD */
 .ScoreHUD {
     display: flex;
