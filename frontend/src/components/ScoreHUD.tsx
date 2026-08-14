@@ -14,7 +14,7 @@ export function ScoreHUD({ currentRound, totalRounds, score, guessesRemaining, t
             <span className="label">Round {currentRound} / {totalRounds}</span>
             <span className="label ScoreHUD-dots" aria-label={`${guessesRemaining} guesses remaining`}>
                 {dots.map((filled, i) => (
-                    <span key={i} className={filled ? "dot dot-filled" : "dot dot-empty"} />
+                    <span key={i} className={filled ? "guess-dot guess-dot-filled" : "guess-dot guess-dot-empty"} />
                 ))}
             </span>
             <span className="label">Score {score}</span>
