@@ -21,9 +21,8 @@ export function Home() {
 
     return (
         <div className="page Home-page">
-            <span className="label">Portrait</span>
             <h1 className="display Home-title">
-                guess the<br />player.
+                bballguessr
             </h1>
             <hr className="rule Home-rule" />
             <p className="Home-desc">
