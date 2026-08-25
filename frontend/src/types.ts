@@ -35,3 +35,24 @@ export interface PlayerMatch {
 export interface AutocompleteResponse {
     players: PlayerMatch[]
 }
+
+// gamemode selection, sent as query params to POST /api/game/start
+export type GamePreset = 'legends' | 'all_stars' | 'everyone' | 'custom'
+
+export interface GameFilters {
+    preset: GamePreset
+    min_career_length?: number
+    min_allstar_count?: number
+    min_allnba_count?: number
+    start_year_min?: number
+    start_year_max?: number
+}
+
+// controlled values for the CustomFilters panel — always fully populated (floor values act as "no filter")
+export interface CustomFilterValues {
+    min_career_length: number
+    min_allstar_count: number
+    min_allnba_count: number
+    start_year_min: number
+    start_year_max: number
+}

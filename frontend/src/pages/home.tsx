@@ -1,23 +1,7 @@
-import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { startGame } from '../api'
 
 export function Home() {
     const navigate = useNavigate()
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState(false)
-
-    const handleStart = async () => {
-        setLoading(true)
-        setError(false)
-        try {
-            const gameId = await startGame()
-            navigate(`/game/${gameId}`)
-        } catch {
-            setError(true)
-            setLoading(false)
-        }
-    }
 
     return (
         <div className="page Home-page">
@@ -29,10 +13,17 @@ export function Home() {
                 Five NBA players. Only their basketball-reference stat lines to go on.
                 Three guesses each round.
             </p>
-            <button type="button" className="Home-start" onClick={handleStart} disabled={loading}>
-                {loading ? 'Starting…' : 'Start game'}
-            </button>
-            {error && <p className="label Home-error">Couldn't start a game — try again.</p>}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '1.25rem' }}>
+                <button type="button" className="Home-start" onClick={() => navigate('/play')}>
+                    Quick play
+                </button>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+                    <button type="button" className="Home-start" disabled>
+                        Create challenge
+                    </button>
+                    <span className="label">Coming soon</span>
+                </div>
+            </div>
         </div>
     )
 }
