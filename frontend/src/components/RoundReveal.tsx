@@ -10,10 +10,10 @@ interface RoundRevealProps {
 export function RoundReveal({ player, correct, isLastRound, onContinue }: RoundRevealProps) {
     return (
         <div className="RoundReveal">
-            <span className="label">{correct ? 'Correct' : 'Round over'}</span>
             {player.img_url && (
                 <img className="RoundReveal-img" src={player.img_url} alt={player.name} />
             )}
+            <div className="label">{correct ? 'Correct' : 'Round over'}</div>
             <h2 className="display RoundReveal-name">{player.name}</h2>
             <button type="button" className="RoundReveal-continue" onClick={onContinue}>
                 {isLastRound ? 'See results' : 'Next round'}
