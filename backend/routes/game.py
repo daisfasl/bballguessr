@@ -39,7 +39,7 @@ def start_game(preset: Literal["legends", "all_stars", "everyone", "custom"] | N
 
     return create_session(players)
 
-# desc: resolve preset/custom query params into a list of sqlalchemy filter clauses
+# resolve preset/custom query params into a list of sqlalchemy filter clauses
 def build_gamemode_filters(preset, min_career_length, min_allstar_count, min_allnba_count, start_year_min, start_year_max):
     filters = []
     if preset == "legends":
@@ -60,7 +60,7 @@ def build_gamemode_filters(preset, min_career_length, min_allstar_count, min_all
     # preset == "everyone" (or no preset given) -> no filter, pull from all players
     return filters
 
-# desc: build+store a session dict from an already-fetched list of Player rows, returns the game_id
+# build+store a session dict from an already-fetched list of Player rows, returns the game_id
 def create_session(players) -> str:
     players = jsonable_encoder(players)
     res = {"current_score":0,

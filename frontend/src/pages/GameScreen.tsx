@@ -105,7 +105,7 @@ export function GameScreen() {
         return (
             <div className="page GameOver">
                 <span className="label">Game over</span>
-                <h1 className="display GameOver-score">{hud.score}</h1>
+                <h1 className="display GameOver-score">{hud.score}/15</h1>
                 <p className="label">Final score</p>
                 <Link to="/" className="Home-start GameOver-again">Play again</Link>
             </div>
