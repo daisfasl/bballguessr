@@ -7,6 +7,7 @@ interface ModeOption {
 }
 
 const MODES: ModeOption[] = [
+    { id: 'curated', name: 'Curated', hint: '~470 · well-known players · recommended' },
     { id: 'all_stars', name: 'All-Stars', hint: '536 players · at least one All-Star season · a good default' },
     { id: 'legends', name: 'Legends', hint: '166 players · five or more All-Star seasons · the most recognizable names' },
     { id: 'everyone', name: 'Everyone', hint: '5,409 players · no filter · hardcore' },

@@ -16,7 +16,7 @@ const DEFAULT_CUSTOM_FILTERS: CustomFilterValues = {
 
 export function Play() {
     const navigate = useNavigate()
-    const [preset, setPreset] = useState<GamePreset>('all_stars')
+    const [preset, setPreset] = useState<GamePreset>('curated')
     const [customFilters, setCustomFilters] = useState<CustomFilterValues>(DEFAULT_CUSTOM_FILTERS)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)

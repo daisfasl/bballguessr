@@ -37,7 +37,7 @@ export interface AutocompleteResponse {
 }
 
 // gamemode selection, sent as query params to POST /api/game/start
-export type GamePreset = 'legends' | 'all_stars' | 'everyone' | 'custom'
+export type GamePreset = 'curated' | 'legends' | 'all_stars' | 'everyone' | 'custom'
 
 export interface GameFilters {
     preset: GamePreset
