@@ -14,7 +14,7 @@ router = APIRouter(prefix= "/api/game")
 sessions = dict()
 
 @router.post("/start")
-def start_game(preset: Literal["legends", "all_stars", "everyone", "custom"] | None = None,
+def start_game(preset: Literal["legends", "all_stars", "everyone", "custom", "curated"] | None = None,
                min_career_length: int | None = None,
                min_allstar_count: int | None = None,
                min_allnba_count: int | None = None,
@@ -46,6 +46,8 @@ def build_gamemode_filters(preset, min_career_length, min_allstar_count, min_all
         filters.append(Player.allstar_count >= 5)
     elif preset == "all_stars":
         filters.append(Player.allstar_count >= 1)
+    elif preset == "curated":
+        filters.append(Player.curated == True)
     elif preset == "custom":
         if min_career_length is not None:
             filters.append(Player.career_length >= min_career_length)
