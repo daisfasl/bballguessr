@@ -1,6 +1,7 @@
 import type {GuessResponse, GameStateResponse, RoundStatsResponse, AutocompleteResponse, GameFilters} from "./types"
 
-const BASE = "http://localhost:8000/api"
+// import BASE url from .env file
+const BASE = import.meta.env.VITE_API_URL
 
 // filters is optional — omitting it (or preset "everyone") pulls 5 fully-random players, same as before.
 export async function startGame(filters?: GameFilters): Promise<string> {
