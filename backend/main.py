@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from backend.routes.players import router as player_router
-from backend.routes.game import router as game_router
+from routes.players import router as player_router
+from routes.game import router as game_router
 import os
 from dotenv import load_dotenv
 

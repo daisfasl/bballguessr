@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 from sqlalchemy import select, func
-from backend.database import get_db
-from backend.models import Player
-from backend.schemas import GuessResponse, GameStateResponse, RoundStatsResponse, RevealedPlayer
+from database import get_db
+from models import Player
+from schemas import GuessResponse, GameStateResponse, RoundStatsResponse, RevealedPlayer
 from typing import Literal
 import secrets 
 import string

@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends
-from backend.database import get_db
+from database import get_db
 from sqlalchemy.orm import Session
 from sqlalchemy import select
-from backend.models import Player
-from backend.schemas import AutocompleteResponse, PlayerMatch
+from models import Player
+from schemas import AutocompleteResponse, PlayerMatch
 
 router = APIRouter(prefix= "/api/players")
 
