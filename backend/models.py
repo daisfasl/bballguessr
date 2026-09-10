@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, func
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, func
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.dialects.postgresql import JSONB
 from datetime import datetime, timezone
@@ -30,4 +30,6 @@ class Player(Base):
                            default = 0)
     allnba_count = Column(Integer,
                           default = 0)
+    curated = Column(Boolean,
+                     default = False)
 
