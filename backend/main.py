@@ -12,7 +12,7 @@ if not FRONTEND_URL:
     raise ValueError("No FRONTEND_URL in .env file")
 app = FastAPI()
 
-origins = FRONTEND_URL
+origins = [FRONTEND_URL]
 
 app.add_middleware(
         CORSMiddleware,
