@@ -2,7 +2,7 @@ import type {GuessResponse, GameStateResponse, RoundStatsResponse, AutocompleteR
 
 // import BASE url from .env file
 const BASE = import.meta.env.VITE_API_URL
-
+console.log(BASE)
 // filters is optional — omitting it (or preset "everyone") pulls 5 fully-random players, same as before.
 export async function startGame(filters?: GameFilters): Promise<string> {
   const params = new URLSearchParams()
