@@ -1,0 +1,107 @@
+/* HalftoneBall + BallGlyph. Ink is always currentColor; the only other color
+   is the paper knockout, read from --paper so dark mode works for free. */
+
+.HalftoneBall {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* Light theme (default): ink is shadow. Seams are ink with a paper gap
+   underneath so they stay legible over the dark side of the ball. */
+.HalftoneBall-seam {
+  fill: currentColor;
+}
+
+.HalftoneBall-gap {
+  fill: var(--paper, #E4E2DC);
+}
+
+.HalftoneBall-dots--chalk {
+  display: none;
+}
+
+/* Dark theme: ink is light (chalk on blacktop), so swap to the plate that
+   inks the lit side, and cut the seams in as dark grooves with a light lip.
+   :where() keeps the OS-preference rule weaker than an explicit
+   data-theme="light" ancestor. */
+@media (prefers-color-scheme: dark) {
+  :where(:root:not([data-theme="light"])) .HalftoneBall .HalftoneBall-dots--shade {
+    display: none;
+  }
+  :where(:root:not([data-theme="light"])) .HalftoneBall .HalftoneBall-dots--chalk {
+    display: inline;
+  }
+  :where(:root:not([data-theme="light"])) .HalftoneBall .HalftoneBall-seam {
+    fill: var(--paper, #151514);
+  }
+  :where(:root:not([data-theme="light"])) .HalftoneBall .HalftoneBall-gap {
+    fill: currentColor;
+  }
+}
+
+[data-theme="light"] .HalftoneBall .HalftoneBall-dots--shade {
+  display: inline;
+}
+[data-theme="light"] .HalftoneBall .HalftoneBall-dots--chalk {
+  display: none;
+}
+[data-theme="light"] .HalftoneBall .HalftoneBall-seam {
+  fill: currentColor;
+}
+[data-theme="light"] .HalftoneBall .HalftoneBall-gap {
+  fill: var(--paper, #E4E2DC);
+}
+
+[data-theme="dark"] .HalftoneBall .HalftoneBall-dots--shade {
+  display: none;
+}
+[data-theme="dark"] .HalftoneBall .HalftoneBall-dots--chalk {
+  display: inline;
+}
+[data-theme="dark"] .HalftoneBall .HalftoneBall-seam {
+  fill: var(--paper, #151514);
+}
+[data-theme="dark"] .HalftoneBall .HalftoneBall-gap {
+  fill: currentColor;
+}
+
+.HalftoneBall-seams {
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .HalftoneBall--spin .HalftoneBall-seams {
+    animation: HalftoneBall-turn 60s linear infinite;
+  }
+}
+
+@keyframes HalftoneBall-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.BallGlyph {
+  display: inline-block;
+  flex: none;
+  vertical-align: -0.125em;
+}
+
+.BallGlyph-knockout {
+  stroke: var(--paper, #E4E2DC);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .BallGlyph--spin {
+    animation: BallGlyph-turn 1s linear infinite;
+  }
+}
+
+@keyframes BallGlyph-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
