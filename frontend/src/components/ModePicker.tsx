@@ -3,15 +3,16 @@ import type { GamePreset } from '../types'
 interface ModeOption {
     id: GamePreset
     name: string
-    hint: string
+    count: string
+    blurb: string
 }
 
 const MODES: ModeOption[] = [
-    { id: 'curated', name: 'Curated', hint: '~470 · well-known players · recommended' },
-    { id: 'all_stars', name: 'All-Stars', hint: '536 players · at least one All-Star season · a good default' },
-    { id: 'legends', name: 'Legends', hint: '166 players · five or more All-Star seasons · the most recognizable names' },
-    { id: 'everyone', name: 'Everyone', hint: '5,409 players · no filter · hardcore' },
-    { id: 'custom', name: 'Custom', hint: 'set your own filters' },
+    { id: 'curated', name: 'Curated', count: '~470 players', blurb: 'Well-known players. The best place to start.' },
+    { id: 'all_stars', name: 'All-Stars', count: '536 players', blurb: 'Anyone with at least one All-Star season.' },
+    { id: 'legends', name: 'Legends', count: '166 players', blurb: 'Five or more All-Star seasons. The most recognizable names.' },
+    { id: 'everyone', name: 'Everyone', count: '5,409 players', blurb: 'No filter at all. For the hardcore.' },
+    { id: 'custom', name: 'Custom', count: '', blurb: 'Set your own career length, accolades and era.' },
 ]
 
 interface ModePickerProps {
@@ -31,7 +32,8 @@ export function ModePicker({ selected, onSelect }: ModePickerProps) {
                     aria-pressed={mode.id === selected}
                 >
                     <span className="display ModePicker-name">{mode.name}</span>
-                    <span className="label ModePicker-hint">{mode.hint}</span>
+                    {mode.count && <span className="label ModePicker-count">{mode.count}</span>}
+                    <span className="ModePicker-blurb">{mode.blurb}</span>
                 </button>
             ))}
         </div>
