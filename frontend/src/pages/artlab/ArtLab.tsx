@@ -1,6 +1,7 @@
 // dev-only design lab at /__art — type specimen + art component demos. delete before shipping.
 
 import { PrintLab } from './PrintLab'
+import { BallLab } from './BallLab'
 
 const SAMPLE_ROWS = [
     ['2003-04', '19', 'CLE', '79', '20.9', '5.5', '5.9', ''],
@@ -67,6 +68,7 @@ export default function ArtLab() {
     return (
         <div className="page">
             <Specimen />
+            <BallLab />
             <PrintLab />
         </div>
     )
