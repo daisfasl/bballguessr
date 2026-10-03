@@ -43,50 +43,109 @@
     padding: 3rem 1.5rem 4rem;
 }
 
-/* Home */
+/* Home — ball up top with registration notes, wordmark under it, centered like a poster */
 .Home-page {
-    padding-top: 6rem;
-    max-width: 640px;
+    max-width: 720px;
+    padding-top: 2rem;
+    text-align: center;
+}
+
+.Home-hero {
+    position: relative;
+    width: fit-content;
+    margin: 0 auto;
+}
+
+.Home-ball {
+    display: block;
+    width: min(320px, 68vw);
+    height: auto;
+}
+
+.Crosshair {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: var(--ink);
+}
+
+.Crosshair-text {
+    color: var(--ink-2);
+}
+
+.Home-note {
+    position: absolute;
+    white-space: nowrap;
+}
+
+.Home-note-rounds {
+    top: 4%;
+    right: -38%;
+}
+
+.Home-note-guesses {
+    top: 52%;
+    left: -36%;
+}
+
+.Home-note-era {
+    bottom: 2%;
+    right: -30%;
 }
 
 .Home-title {
-    font-size: 4.5rem;
-    margin: 1rem 0 2rem;
-}
-
-.Home-rule {
-    margin-bottom: 2rem;
+    font-size: clamp(3.5rem, 13vw, 7.5rem);
+    margin: 2.5rem 0 1.5rem;
 }
 
 .Home-desc {
+    max-width: 42ch;
+    margin: 0 auto 2.25rem;
     color: var(--muted);
-    max-width: 420px;
-    margin-bottom: 2.5rem;
+    font-size: 1.05rem;
 }
 
-.Home-start {
-    padding: 0.9rem 2.2rem;
-    background: var(--ink);
-    color: var(--paper);
-    border: none;
-    font-size: 0.85rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    cursor: pointer;
+.Home-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem;
 }
 
-.Home-start:hover {
-    opacity: 0.85;
+.Home-soon {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
 }
 
-.Home-start:disabled {
-    opacity: 0.5;
-    cursor: default;
+.Home-credit {
+    margin: 4rem 0 0;
+    font-size: 0.8rem;
+    color: var(--muted);
 }
 
-.Home-error {
-    margin-top: 1rem;
-    color: var(--ink);
+.Home-credit a {
+    text-underline-offset: 0.2em;
+}
+
+/* under ~640px the notes would collide with the ball, so they drop into a row beneath it */
+@media (max-width: 640px) {
+    .Home-notes {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.4rem 1.1rem;
+        margin-top: 1.25rem;
+    }
+
+    .Home-note {
+        position: static;
+    }
+
+    .Home-title {
+        margin-top: 1.75rem;
+    }
 }
 
 /* GameScreen */
