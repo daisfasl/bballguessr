@@ -21,8 +21,8 @@ export function CustomFilters({ values, onChange }: CustomFiltersProps) {
     return (
         <div className="CustomFilters">
             <div className="CustomFilters-field">
-                <label className="label" htmlFor="min_career_length">
-                    Min career length ({CAREER_LENGTH_BOUNDS.min}–{CAREER_LENGTH_BOUNDS.max} seasons)
+                <label className="CustomFilters-label" htmlFor="min_career_length">
+                    Minimum career length, in seasons ({CAREER_LENGTH_BOUNDS.min}–{CAREER_LENGTH_BOUNDS.max})
                 </label>
                 <input
                     id="min_career_length"
@@ -35,8 +35,8 @@ export function CustomFilters({ values, onChange }: CustomFiltersProps) {
             </div>
 
             <div className="CustomFilters-field">
-                <label className="label" htmlFor="min_allstar_count">
-                    Min All-Star seasons ({ALLSTAR_BOUNDS.min}–{ALLSTAR_BOUNDS.max})
+                <label className="CustomFilters-label" htmlFor="min_allstar_count">
+                    Minimum All-Star seasons ({ALLSTAR_BOUNDS.min}–{ALLSTAR_BOUNDS.max})
                 </label>
                 <input
                     id="min_allstar_count"
@@ -49,8 +49,8 @@ export function CustomFilters({ values, onChange }: CustomFiltersProps) {
             </div>
 
             <div className="CustomFilters-field">
-                <label className="label" htmlFor="min_allnba_count">
-                    Min All-NBA seasons ({ALLNBA_BOUNDS.min}–{ALLNBA_BOUNDS.max})
+                <label className="CustomFilters-label" htmlFor="min_allnba_count">
+                    Minimum All-NBA seasons ({ALLNBA_BOUNDS.min}–{ALLNBA_BOUNDS.max})
                 </label>
                 <input
                     id="min_allnba_count"
@@ -63,10 +63,10 @@ export function CustomFilters({ values, onChange }: CustomFiltersProps) {
             </div>
 
             <div className="CustomFilters-field CustomFilters-era">
-                <label className="label">
-                    Era ({YEAR_BOUNDS.min}–{YEAR_BOUNDS.max}, by career start year)
-                </label>
-                <div className="CustomFilters-eraInputs">
+                <span className="CustomFilters-label" id="era-label">
+                    Era, by the year their career started ({YEAR_BOUNDS.min}–{YEAR_BOUNDS.max})
+                </span>
+                <div className="CustomFilters-eraInputs" role="group" aria-labelledby="era-label">
                     <input
                         aria-label="Earliest career start year"
                         type="number"
@@ -75,7 +75,7 @@ export function CustomFilters({ values, onChange }: CustomFiltersProps) {
                         value={values.start_year_min}
                         onChange={(e) => set('start_year_min', e.target.value, YEAR_BOUNDS)}
                     />
-                    <span className="label">to</span>
+                    <span className="CustomFilters-dash" aria-hidden="true">–</span>
                     <input
                         aria-label="Latest career start year"
                         type="number"

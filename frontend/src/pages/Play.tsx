@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { startGame } from '../api'
 import { ModePicker } from '../components/ModePicker'
 import { CustomFilters } from '../components/CustomFilters'
@@ -32,32 +32,27 @@ export function Play() {
             navigate(`/game/${gameId}`)
         } catch (err) {
             const detail = err instanceof Error ? err.message : ''
-            setError(detail || "Couldn't start a game — try again.")
+            setError(detail || "Couldn't reach the server. Check your connection and start again.")
             setLoading(false)
         }
     }
 
     return (
         <div className="page Play-page">
-            <Link to="/" className="label Play-back">&larr; Back</Link>
             <h1 className="display Play-title">Choose a mode</h1>
-            <hr className="rule Play-rule" />
 
             <ModePicker selected={preset} onSelect={setPreset} />
 
             {preset === 'custom' && (
-                <>
-                    <hr className="rule Play-rule" />
-                    <CustomFilters values={customFilters} onChange={setCustomFilters} />
-                </>
+                <CustomFilters values={customFilters} onChange={setCustomFilters} />
             )}
 
-            <hr className="rule Play-rule" />
-
-            <button type="button" className="Home-start" onClick={handleStart} disabled={loading}>
-                {loading ? 'Starting…' : 'Start game'}
-            </button>
-            {error && <p className="label Play-error">{error}</p>}
+            <div className="Play-start">
+                <button type="button" className="btn" onClick={handleStart} disabled={loading}>
+                    {loading ? 'Starting…' : 'Start game'}
+                </button>
+                {error && <p className="Play-error" role="alert">{error}</p>}
+            </div>
         </div>
     )
 }
