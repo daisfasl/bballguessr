@@ -5,10 +5,13 @@ import { ScoreHUD } from '../components/ScoreHUD'
 import { StatsTable } from '../components/StatsTable'
 import { PlayerAutocompleteInput } from '../components/PlayerAutocompleteInput'
 import { RoundReveal } from '../components/RoundReveal'
-import type { RevealedPlayer } from '../types'
+import { CourtLines } from '../components/art/CourtLines'
+import { BallGlyph } from '../components/art/BallGlyph'
+import type { PlayerMatch, RevealedPlayer } from '../types'
 
 const TOTAL_ROUNDS = 5
 const TOTAL_GUESSES = 3
+const MAX_SCORE = TOTAL_ROUNDS * TOTAL_GUESSES
 
 interface Hud {
     score: number
@@ -17,12 +20,21 @@ interface Hud {
     gameOver: boolean
 }
 
+// one finished round, kept client-side for the game-over recap (lost on refresh)
+interface RoundResult {
+    player: RevealedPlayer
+    points: number
+}
+
+const pad = (n: number) => String(n).padStart(2, '0')
+
 export function GameScreen() {
     const { gameId } = useParams<{ gameId: string }>()
     const [hud, setHud] = useState<Hud | null>(null)
     const [statsJson, setStatsJson] = useState<Record<string, Record<string, string | null>> | null>(null)
-    const [reveal, setReveal] = useState<{ player: RevealedPlayer; correct: boolean } | null>(null)
-    const [wrongMessage, setWrongMessage] = useState(false)
+    const [reveal, setReveal] = useState<RoundResult | null>(null)
+    const [recap, setRecap] = useState<RoundResult[]>([])
+    const [wrongGuesses, setWrongGuesses] = useState<PlayerMatch[]>([])
     const [submitting, setSubmitting] = useState(false)
     const [error, setError] = useState(false)
 
@@ -48,12 +60,11 @@ export function GameScreen() {
         }
     }, [gameId])
 
-    const handleGuess = async (playerId: string) => {
-        if (!gameId || submitting) return
+    const handleGuess = async (match: PlayerMatch) => {
+        if (!gameId || !hud || submitting) return
         setSubmitting(true)
-        setWrongMessage(false)
         try {
-            const res = await guessPlayer(gameId, playerId)
+            const res = await guessPlayer(gameId, match.basketball_reference_id)
             setHud({
                 score: res.current_score,
                 round: res.current_round,
@@ -61,9 +72,11 @@ export function GameScreen() {
                 gameOver: res.game_over,
             })
             if (res.revealed_player) {
-                setReveal({ player: res.revealed_player, correct: res.last_guess })
+                const result = { player: res.revealed_player, points: res.current_score - hud.score }
+                setReveal(result)
+                setRecap((prev) => [...prev, result])
             } else {
-                setWrongMessage(true)
+                setWrongGuesses((prev) => [...prev, match])
             }
         } catch {
             setError(true)
@@ -75,6 +88,7 @@ export function GameScreen() {
     const handleContinue = async () => {
         if (!gameId || !hud) return
         setReveal(null)
+        setWrongGuesses([])
         if (hud.gameOver) return
         try {
             const stats = await getRoundStats(gameId)
@@ -86,17 +100,19 @@ export function GameScreen() {
 
     if (error) {
         return (
-            <div className="page">
-                <p className="label">Couldn't load this game.</p>
-                <Link to="/">Start a new one</Link>
+            <div className="page GameScreen-status">
+                <p>This game has expired or the server restarted.</p>
+                <Link to="/play" className="btn">Start a new game</Link>
             </div>
         )
     }
 
     if (!hud || !statsJson) {
         return (
-            <div className="page">
-                <p className="label">Loading…</p>
+            <div className="page GameScreen-status">
+                <p className="GameScreen-loading">
+                    <BallGlyph size={18} spinning /> Loading round…
+                </p>
             </div>
         )
     }
@@ -104,41 +120,74 @@ export function GameScreen() {
     if (hud.gameOver && !reveal) {
         return (
             <div className="page GameOver">
-                <span className="label">Game over</span>
-                <h1 className="display GameOver-score">{hud.score}/15</h1>
-                <p className="label">Final score</p>
-                <Link to="/" className="Home-start GameOver-again">Play again</Link>
+                <p className="GameOver-score">
+                    <span className="display GameOver-points">{hud.score}</span>
+                    <span className="label GameOver-max">/ {MAX_SCORE}</span>
+                </p>
+                {recap.length > 0 && (
+                    <ol className="GameOver-recap">
+                        {recap.map((r, i) => (
+                            <li key={r.player.basketball_reference_id} className={r.points > 0 ? undefined : 'is-missed'}>
+                                <span className="callout-num">{pad(i + 1)}</span>
+                                <span className="GameOver-name">{r.player.name}</span>
+                                <span className="GameOver-leader" aria-hidden="true" />
+                                <span className="label GameOver-result">{r.points > 0 ? `+${r.points}` : 'Missed'}</span>
+                            </li>
+                        ))}
+                    </ol>
+                )}
+                <div className="GameOver-actions">
+                    <Link to="/play" className="btn">Play again</Link>
+                    <Link to="/" className="btn btn-ghost">Home</Link>
+                </div>
             </div>
         )
     }
 
     return (
-        <div className="page">
-            <ScoreHUD
-                currentRound={hud.round}
-                totalRounds={TOTAL_ROUNDS}
-                score={hud.score}
-                guessesRemaining={hud.guessesRemaining}
-                totalGuesses={TOTAL_GUESSES}
-            />
-            {reveal ? (
-                <RoundReveal
-                    player={reveal.player}
-                    correct={reveal.correct}
-                    isLastRound={hud.gameOver}
-                    onContinue={handleContinue}
+        <>
+            <CourtLines />
+            <div className="page GameScreen">
+                <ScoreHUD
+                    currentRound={reveal ? recap.length : hud.round}
+                    totalRounds={TOTAL_ROUNDS}
+                    score={hud.score}
+                    guessesRemaining={reveal ? Math.max(0, reveal.points - 1) : hud.guessesRemaining}
+                    totalGuesses={TOTAL_GUESSES}
                 />
-            ) : (
-                <>
-                    <StatsTable statsJson={statsJson} />
-                    <PlayerAutocompleteInput onGuess={handleGuess} disabled={submitting} />
-                    {wrongMessage && (
-                        <p className="label GameScreen-wrong">
-                            Not quite — {hud.guessesRemaining} guess{hud.guessesRemaining === 1 ? '' : 'es'} left
-                        </p>
-                    )}
-                </>
-            )}
-        </div>
+                {reveal ? (
+                    <RoundReveal
+                        player={reveal.player}
+                        points={reveal.points}
+                        isLastRound={hud.gameOver}
+                        onContinue={handleContinue}
+                    />
+                ) : (
+                    <>
+                        <StatsTable statsJson={statsJson} />
+                        <div className="GameScreen-guess">
+                            {wrongGuesses.length > 0 && (
+                                <ul className="GameScreen-wrong" aria-label="Wrong guesses">
+                                    {wrongGuesses.map((g, i) => (
+                                        <li key={`${g.basketball_reference_id}-${i}`} className="pill pill-struck">{g.name}</li>
+                                    ))}
+                                </ul>
+                            )}
+                            <PlayerAutocompleteInput
+                                onGuess={handleGuess}
+                                busy={submitting}
+                                shakeKey={wrongGuesses.length}
+                                autoFocus
+                            />
+                            <p className="GameScreen-hint" aria-live="polite">
+                                {wrongGuesses.length > 0
+                                    ? `Not him. ${hud.guessesRemaining} guess${hud.guessesRemaining === 1 ? '' : 'es'} left.`
+                                    : ' '}
+                            </p>
+                        </div>
+                    </>
+                )}
+            </div>
+        </>
     )
 }
