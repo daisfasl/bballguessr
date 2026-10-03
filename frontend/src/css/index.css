@@ -1,12 +1,48 @@
+/* tokens — light "concrete" is the default, dark "blacktop" via OS or data-theme */
 :root {
-    --bg: #f4f3f1;
-    --paper: #ffffff;
-    --ink: #111111;
-    --muted: #6b6b6b;
-    --rule: #dcd9d4;
+    --paper: #E4E2DC;
+    --paper-2: #D9D6CE;
+    --ink: #000000;
+    --ink-2: #34332F;
+    --muted: #6E6B64;
+    --rule: #C4C0B6;
 
-    --font-display: "Playfair Display", Georgia, serif;
+    --grain-opacity: 0.10;
+    --grain-blend: multiply;
+
+    --font-display: "Archivo", "Inter", system-ui, sans-serif;
     --font-body: "Inter", system-ui, sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace;
+
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+    color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --paper: #151514;
+        --paper-2: #1E1E1C;
+        --ink: #E4E2DC;
+        --ink-2: #B9B6AE;
+        --muted: #8C8981;
+        --rule: #34332F;
+        --grain-opacity: 0.07;
+        --grain-blend: screen;
+        color-scheme: dark;
+    }
+}
+
+:root[data-theme="dark"] {
+    --paper: #151514;
+    --paper-2: #1E1E1C;
+    --ink: #E4E2DC;
+    --ink-2: #B9B6AE;
+    --muted: #8C8981;
+    --rule: #34332F;
+    --grain-opacity: 0.07;
+    --grain-blend: screen;
+    color-scheme: dark;
 }
 
 * {
@@ -19,12 +55,25 @@ html, body {
 }
 
 body {
-    background: var(--bg);
+    background: var(--paper);
     color: var(--ink);
     font-family: var(--font-body);
     font-size: 16px;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
+}
+
+/* paper grain — static tiled noise laid over everything, like ink on newsprint */
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    pointer-events: none;
+    opacity: var(--grain-opacity);
+    mix-blend-mode: var(--grain-blend);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 1.6 -0.3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 256px 256px;
 }
 
 #root {
@@ -40,24 +89,139 @@ button, input {
     color: inherit;
 }
 
+:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+}
+
+/* annotation / data text — mono caps. only for stats, HUD, pills and callouts */
 .label {
-    font-family: var(--font-body);
+    font-family: var(--font-mono);
     font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.14em;
+    font-weight: 500;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
+    font-variant-numeric: tabular-nums;
     color: var(--muted);
 }
 
 .display {
     font-family: var(--font-display);
-    font-weight: 700;
-    line-height: 1.05;
+    font-weight: 900;
+    letter-spacing: -0.045em;
+    line-height: 0.9;
     margin: 0;
+}
+
+.muted {
+    color: var(--muted);
 }
 
 .rule {
     border: none;
     border-top: 1px solid var(--rule);
     margin: 0;
+}
+
+.rule-heavy {
+    border: none;
+    border-top: 2px solid var(--ink);
+    margin: 0;
+}
+
+/* pills — outlined capsules for tags, awards and guesses */
+.pill {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    line-height: 1;
+    padding: 0.32em 0.75em;
+    border: 1px solid var(--ink);
+    border-radius: 999px;
+    color: var(--ink);
+    white-space: nowrap;
+}
+
+.pill-solid {
+    background: var(--ink);
+    color: var(--paper);
+}
+
+.pill-struck {
+    border-color: var(--muted);
+    color: var(--muted);
+    text-decoration: line-through;
+}
+
+/* buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+    padding: 0.85rem 1.6rem;
+    background: var(--ink);
+    color: var(--paper);
+    border: 2px solid var(--ink);
+    border-radius: 0;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 160ms var(--ease-out);
+}
+
+.btn:active:not(:disabled) {
+    transform: scale(0.97);
+}
+
+.btn:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+
+.btn-ghost {
+    background: transparent;
+    color: var(--ink);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .btn:hover:not(:disabled) {
+        background: transparent;
+        color: var(--ink);
+    }
+
+    .btn-ghost:hover:not(:disabled) {
+        background: var(--ink);
+        color: var(--paper);
+    }
+}
+
+/* round marker — inverted square with a mono number; rounds only */
+.callout-num {
+    display: inline-grid;
+    place-items: center;
+    min-width: 1.9em;
+    height: 1.9em;
+    padding: 0 0.3em;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
 }

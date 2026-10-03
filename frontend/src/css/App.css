@@ -2,6 +2,41 @@
     min-height: 100vh;
 }
 
+/* SiteHeader */
+.SiteHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 1.25rem 1.5rem 0;
+}
+
+.SiteHeader-bare {
+    justify-content: flex-end;
+}
+
+.SiteHeader-wordmark {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.15rem;
+    letter-spacing: -0.04em;
+    text-decoration: none;
+}
+
+.ThemeToggle {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    margin-right: -0.5rem;
+    padding: 0;
+    background: none;
+    border: none;
+    color: var(--ink);
+    cursor: pointer;
+}
+
 .page {
     max-width: 960px;
     margin: 0 auto;
@@ -32,7 +67,7 @@
 .Home-start {
     padding: 0.9rem 2.2rem;
     background: var(--ink);
-    color: var(--bg);
+    color: var(--paper);
     border: none;
     font-size: 0.85rem;
     letter-spacing: 0.08em;
@@ -148,7 +183,7 @@
     width: 100%;
     padding: 0.9rem 1rem;
     border: 1px solid var(--ink);
-    background: var(--paper);
+    background: var(--paper-2);
     font-size: 1rem;
 }
 
@@ -161,7 +196,7 @@
     top: calc(100% + 4px);
     left: 0;
     right: 0;
-    background: var(--paper);
+    background: var(--paper-2);
     border: 1px solid var(--ink);
     list-style: none;
     margin: 0;
@@ -181,7 +216,7 @@
 }
 
 .PlayerAutocompleteInput-dropdown li button:hover {
-    background: var(--bg);
+    background: var(--paper);
 }
 
 /* RoundReveal */
@@ -207,7 +242,7 @@
 .RoundReveal-continue {
     padding: 0.8rem 2rem;
     background: var(--ink);
-    color: var(--bg);
+    color: var(--paper);
     border: none;
     font-size: 0.85rem;
     letter-spacing: 0.08em;
