@@ -1,0 +1,106 @@
+/* Print art: DitheredImage (round reveal headshot) and CourtLines (backdrop).
+   Colour only via currentColor, so both themes work without extra rules. */
+
+/* ---------- DitheredImage ---------- */
+
+.DitheredImage {
+  position: relative;
+  display: inline-block;
+  flex: none;
+  vertical-align: top;
+  color: inherit;
+}
+
+.DitheredImage-media {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.DitheredImage-canvas {
+  image-rendering: pixelated;
+}
+
+/* Hold the canvas back until the dither has painted. */
+.DitheredImage[data-status='loading'] .DitheredImage-media {
+  visibility: hidden;
+}
+
+.DitheredImage-photo {
+  object-fit: cover;
+  object-position: 50% 15%;
+  filter: grayscale(1) contrast(1.1);
+}
+
+/* No headshot: an empty frame holding a plain ink circle. */
+.DitheredImage-empty {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 36%;
+  height: 36%;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+}
+
+/* Crop marks: short L-shaped hairlines just outside each corner. */
+.DitheredImage-ticks {
+  --tick-gap: 6px;
+  --tick-len: 10px;
+  position: absolute;
+  inset: calc(-1 * var(--tick-gap));
+  pointer-events: none;
+}
+
+.DitheredImage-tick {
+  position: absolute;
+  width: var(--tick-len);
+  height: var(--tick-len);
+  border: 0 solid currentColor;
+}
+
+.DitheredImage-tick--tl { top: 0; left: 0; border-top-width: 1px; border-left-width: 1px; }
+.DitheredImage-tick--tr { top: 0; right: 0; border-top-width: 1px; border-right-width: 1px; }
+.DitheredImage-tick--bl { bottom: 0; left: 0; border-bottom-width: 1px; border-left-width: 1px; }
+.DitheredImage-tick--br { bottom: 0; right: 0; border-bottom-width: 1px; border-right-width: 1px; }
+
+/* The develop: the print comes up from the top in ten hard bands, as if
+   fed through a press, while the ink settles from a light pull to full. */
+@media (prefers-reduced-motion: no-preference) {
+  .DitheredImage[data-status='painted'] .DitheredImage-media,
+  .DitheredImage[data-status='fallback'] .DitheredImage-media {
+    animation:
+      DitheredImage-wipe 400ms steps(10, end) both,
+      DitheredImage-ink 400ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
+
+@keyframes DitheredImage-wipe {
+  from { clip-path: inset(0 0 100% 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes DitheredImage-ink {
+  from { opacity: 0.35; }
+  to { opacity: 1; }
+}
+
+/* ---------- CourtLines ---------- */
+
+.CourtLines {
+  display: block;
+  overflow: visible;
+}
+
+.CourtLines-backdrop {
+  position: fixed;
+  z-index: 0;
+  pointer-events: none;
+  right: -24vmin;
+  bottom: -34vmin;
+  width: 110vmin;
+  height: auto;
+  opacity: 0.06;
+  transform: rotate(-14deg);
+  transform-origin: 50% 50%;
+}
