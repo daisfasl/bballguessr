@@ -53,7 +53,7 @@ export function PlayerAutocompleteInput({ onGuess, busy, shakeKey = 0, autoFocus
                 { transform: 'translateX(-3px)' },
                 { transform: 'translateX(0)' },
             ],
-            { duration: 250, easing: 'ease-out' },
+            { duration: 250, easing: 'cubic-bezier(0.23, 1, 0.32, 1)' },
         )
     }, [shakeKey])
 

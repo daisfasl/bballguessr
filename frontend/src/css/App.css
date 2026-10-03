@@ -185,7 +185,13 @@
 }
 
 .GameScreen-wrong .pill {
-    animation: pill-in 200ms var(--ease-out);
+    animation: fade-in 200ms var(--ease-out);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .GameScreen-wrong .pill {
+        animation-name: pill-in;
+    }
 }
 
 .GameScreen-hint {
@@ -196,6 +202,10 @@
 
 @keyframes pill-in {
     from { opacity: 0; transform: scale(0.94); }
+}
+
+@keyframes fade-in {
+    from { opacity: 0; }
 }
 
 /* ScoreHUD */
@@ -354,8 +364,6 @@
     list-style: none;
     background: var(--paper);
     border: 1px solid var(--ink);
-    transform-origin: top center;
-    animation: dropdown-in 140ms var(--ease-out);
 }
 
 .PlayerAutocompleteInput-dropdown li {
@@ -366,10 +374,6 @@
 .PlayerAutocompleteInput-dropdown li.is-active {
     background: var(--ink);
     color: var(--paper);
-}
-
-@keyframes dropdown-in {
-    from { opacity: 0; transform: scaleY(0.96); }
 }
 
 /* RoundReveal — the one orchestrated moment: headshot develops, then the name lands */
@@ -399,9 +403,13 @@
     color: var(--muted);
 }
 
+.RoundReveal.is-ready .RoundReveal-body > * {
+    animation: fade-in 320ms var(--ease-out) both;
+}
+
 @media (prefers-reduced-motion: no-preference) {
     .RoundReveal.is-ready .RoundReveal-body > * {
-        animation: land 320ms var(--ease-out) both;
+        animation-name: land;
     }
 
     .RoundReveal.is-ready .RoundReveal-body > :nth-child(2) { animation-delay: 60ms; }
