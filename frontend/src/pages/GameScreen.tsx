@@ -28,6 +28,9 @@ interface RoundResult {
 
 const pad = (n: number) => String(n).padStart(2, '0')
 
+// focus the guess field on desktop only; on phones it would pop the keyboard over the stats
+const FOCUS_ON_LOAD = window.matchMedia('(pointer: fine)').matches
+
 export function GameScreen() {
     const { gameId } = useParams<{ gameId: string }>()
     const [hud, setHud] = useState<Hud | null>(null)
@@ -120,6 +123,7 @@ export function GameScreen() {
     if (hud.gameOver && !reveal) {
         return (
             <div className="page GameOver">
+                <h1 className="visually-hidden">Final score</h1>
                 <p className="GameOver-score">
                     <span className="display GameOver-points">{hud.score}</span>
                     <span className="label GameOver-max">/ {MAX_SCORE}</span>
@@ -148,6 +152,7 @@ export function GameScreen() {
         <>
             <CourtLines />
             <div className="page GameScreen">
+                <h1 className="visually-hidden">Round {reveal ? recap.length : hud.round} of {TOTAL_ROUNDS}</h1>
                 <ScoreHUD
                     currentRound={reveal ? recap.length : hud.round}
                     totalRounds={TOTAL_ROUNDS}
@@ -177,7 +182,7 @@ export function GameScreen() {
                                 onGuess={handleGuess}
                                 busy={submitting}
                                 shakeKey={wrongGuesses.length}
-                                autoFocus
+                                autoFocus={FOCUS_ON_LOAD}
                             />
                             <p className="GameScreen-hint" aria-live="polite">
                                 {wrongGuesses.length > 0

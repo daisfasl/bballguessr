@@ -394,7 +394,9 @@
 }
 
 .RoundReveal-name {
-    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    max-width: 100%;
+    font-size: clamp(2rem, 8vw, 4.5rem);
+    overflow-wrap: anywhere;
     margin: 1rem 0 0.6rem;
 }
 
@@ -460,6 +462,8 @@
 }
 
 .GameOver-name {
+    min-width: 0;
+    overflow-wrap: anywhere;
     font-family: var(--font-display);
     font-weight: 800;
     font-size: 1.2rem;
@@ -468,6 +472,7 @@
 
 .GameOver-leader {
     flex: 1;
+    min-width: 1rem;
     align-self: flex-end;
     margin-bottom: 0.45rem;
     border-bottom: 1px dotted var(--muted);

@@ -44,7 +44,7 @@ Light ("concrete")             Dark ("blacktop")
 --paper-2    #D9D6CE  (insets) #1E1E1C
 --ink        #000000           #E4E2DC
 --ink-2      #34332F           #B9B6AE
---muted      #6E6B64           #8C8981
+--muted      #605D56           #8C8981
 --rule       #C4C0B6           #34332F
 --grain-opacity 0.10           0.07
 --grain-blend   multiply       screen

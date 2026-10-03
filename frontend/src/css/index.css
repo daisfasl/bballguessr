@@ -4,7 +4,7 @@
     --paper-2: #D9D6CE;
     --ink: #000000;
     --ink-2: #34332F;
-    --muted: #6E6B64;
+    --muted: #605D56;
     --rule: #C4C0B6;
 
     --grain-opacity: 0.55;
@@ -89,6 +89,11 @@ button, input {
     color: inherit;
 }
 
+a, button, input, [role="option"] {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
 :focus-visible {
     outline: 2px solid var(--ink);
     outline-offset: 2px;
@@ -106,6 +111,7 @@ button, input {
 }
 
 .display {
+    text-wrap: balance;
     font-family: var(--font-display);
     font-weight: 900;
     letter-spacing: -0.045em;

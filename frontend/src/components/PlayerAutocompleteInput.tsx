@@ -89,6 +89,7 @@ export function PlayerAutocompleteInput({ onGuess, busy, shakeKey = 0, autoFocus
         <div className="PlayerAutocompleteInput" ref={fieldRef}>
             <input
                 type="text"
+                name="player"
                 className="PlayerAutocompleteInput-field"
                 placeholder="Who is it?"
                 aria-label="Guess a player"

@@ -26,7 +26,9 @@ export function CustomFilters({ values, onChange }: CustomFiltersProps) {
                 </label>
                 <input
                     id="min_career_length"
+                    name="min_career_length"
                     type="number"
+                    inputMode="numeric"
                     min={CAREER_LENGTH_BOUNDS.min}
                     max={CAREER_LENGTH_BOUNDS.max}
                     value={values.min_career_length}
@@ -40,7 +42,9 @@ export function CustomFilters({ values, onChange }: CustomFiltersProps) {
                 </label>
                 <input
                     id="min_allstar_count"
+                    name="min_allstar_count"
                     type="number"
+                    inputMode="numeric"
                     min={ALLSTAR_BOUNDS.min}
                     max={ALLSTAR_BOUNDS.max}
                     value={values.min_allstar_count}
@@ -54,7 +58,9 @@ export function CustomFilters({ values, onChange }: CustomFiltersProps) {
                 </label>
                 <input
                     id="min_allnba_count"
+                    name="min_allnba_count"
                     type="number"
+                    inputMode="numeric"
                     min={ALLNBA_BOUNDS.min}
                     max={ALLNBA_BOUNDS.max}
                     value={values.min_allnba_count}
@@ -69,7 +75,9 @@ export function CustomFilters({ values, onChange }: CustomFiltersProps) {
                 <div className="CustomFilters-eraInputs" role="group" aria-labelledby="era-label">
                     <input
                         aria-label="Earliest career start year"
+                        name="start_year_min"
                         type="number"
+                        inputMode="numeric"
                         min={YEAR_BOUNDS.min}
                         max={YEAR_BOUNDS.max}
                         value={values.start_year_min}
@@ -78,7 +86,9 @@ export function CustomFilters({ values, onChange }: CustomFiltersProps) {
                     <span className="CustomFilters-dash" aria-hidden="true">–</span>
                     <input
                         aria-label="Latest career start year"
+                        name="start_year_max"
                         type="number"
+                        inputMode="numeric"
                         min={YEAR_BOUNDS.min}
                         max={YEAR_BOUNDS.max}
                         value={values.start_year_max}

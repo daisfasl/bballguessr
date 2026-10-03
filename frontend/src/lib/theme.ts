@@ -11,8 +11,18 @@ export function getTheme(): Theme {
     return darkQuery.matches ? 'dark' : 'light'
 }
 
+// browser chrome color follows the page, including a manual pick
+const PAPER: Record<Theme, string> = { light: '#E4E2DC', dark: '#151514' }
+
+function syncThemeColor(theme: Theme) {
+    document.querySelectorAll('meta[name="theme-color"]').forEach((m) => m.setAttribute('content', PAPER[theme]))
+}
+
+if (document.documentElement.dataset.theme) syncThemeColor(getTheme())
+
 export function setTheme(theme: Theme) {
     document.documentElement.dataset.theme = theme
+    syncThemeColor(theme)
     try {
         localStorage.setItem('theme', theme)
     } catch {
