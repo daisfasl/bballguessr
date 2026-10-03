@@ -5,7 +5,8 @@ per-season stats table (scraped from [basketball-reference.com](https://www.bask
 with the name hidden — you get five rounds, three guesses each, and more points for guessing in
 fewer tries.
 
-**Play on: [bballguessr.vercel.app](https://bballguessr.vercel.app)
+**Play on:** [bballguessr.vercel.app](https://bballguessr.vercel.app)
+
 ---
 
 ## The Game
