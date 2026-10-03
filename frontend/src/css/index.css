@@ -119,22 +119,6 @@ a, button, input, [role="option"] {
     margin: 0;
 }
 
-.muted {
-    color: var(--muted);
-}
-
-.rule {
-    border: none;
-    border-top: 1px solid var(--rule);
-    margin: 0;
-}
-
-.rule-heavy {
-    border: none;
-    border-top: 2px solid var(--ink);
-    margin: 0;
-}
-
 /* pills — outlined capsules for tags, awards and guesses */
 .pill {
     display: inline-flex;
