@@ -31,7 +31,8 @@ export function Play() {
             const gameId = await startGame(filters)
             navigate(`/game/${gameId}`)
         } catch (err) {
-            const detail = err instanceof Error ? err.message : ''
+            // a TypeError is the browser's own network failure ("Failed to fetch"); only show messages the server sent
+            const detail = err instanceof Error && !(err instanceof TypeError) ? err.message : ''
             setError(detail || "Couldn't reach the server. Check your connection and start again.")
             setLoading(false)
         }
