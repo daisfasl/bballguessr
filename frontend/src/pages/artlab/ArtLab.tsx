@@ -2,6 +2,20 @@
 
 import { PrintLab } from './PrintLab'
 import { BallLab } from './BallLab'
+import { StatsTable } from '../../components/StatsTable'
+
+// column-oriented like the API: a normal season, a traded season with team splits, a note row, awards
+const col = (...v: (string | null)[]) => Object.fromEntries(v.map((x, i) => [String(i), x]))
+const FIXTURE = {
+    Season: col('2014-15', '2015-16', '2015-16', '2015-16', '2018-19'),
+    Age: col('25', '26', '26', '26', 'Did not play - other pro league'),
+    Team: col('DET', '2TM', 'DET', 'ORL', null),
+    G: col('41', '48', '23', '25', null),
+    PTS: col('15.4', '6.8', '6.9', '6.7', null),
+    TRB: col('3.4', '2.2', '2.1', '2.3', null),
+    AST: col('6.6', '3.4', '3.0', '3.8', null),
+    Awards: col('', 'AS,NBA2', '', '', null),
+}
 
 const SAMPLE_ROWS = [
     ['2003-04', '19', 'CLE', '79', '20.9', '5.5', '5.9', ''],
@@ -68,6 +82,10 @@ export default function ArtLab() {
     return (
         <div className="page">
             <Specimen />
+            <section className="ArtLab-section" style={{ marginTop: '3rem' }}>
+                <p className="label">StatsTable edge cases</p>
+                <StatsTable statsJson={FIXTURE} />
+            </section>
             <BallLab />
             <PrintLab />
         </div>
