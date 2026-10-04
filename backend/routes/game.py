@@ -70,6 +70,7 @@ def create_session(players) -> str:
            "game_over" : False}
     for i, rnd in enumerate(players):
         rnd["guesses_remaining"] = 3
+        rnd["guessed_ids"] = []
         res[str(i+1)] = rnd # BEWARE: ROUND NUMS IN STR!!!
     game_id = generate_game_id()
 
@@ -106,51 +107,61 @@ def get_round_stats(game_id: str):
 
 @router.post("/{game_id}/guess/{basketball_reference_id}")
 def guess(game_id: str, basketball_reference_id: str):
-    game = sessions.get(game_id, None)
-    if game:
-        if game["game_over"]:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                                detail= "game associated with game_id is completed")
-        round_num = str(game.get("current_round"))
-        game[round_num]["guesses_remaining"] -= 1
-        guesses_remaining = game[round_num]["guesses_remaining"]
-        round_player = game[round_num]
+    game = get_active_game(game_id)
+    round_player = game[str(game["current_round"])]
 
-        if round_player.get("basketball_reference_id", None) == basketball_reference_id:
-            game["current_score"] += guesses_remaining + 1
-            revealed_player = RevealedPlayer(name=round_player["name"],
-                                             img_url=round_player.get("img_url"),
-                                             basketball_reference_id=round_player["basketball_reference_id"])
-            if game["current_round"] == 5:
-                game["game_over"] = True
-            else:
-                guesses_remaining = 3
-                game["current_round"] += 1
-            return GuessResponse(last_guess=True,
-                                 current_score= game["current_score"],
-                                 current_round=game["current_round"],
-                                 guesses_remaining=guesses_remaining,
-                                 game_over=game["game_over"],
-                                 revealed_player=revealed_player)
-        else:
-            revealed_player = None
-            if guesses_remaining == 0:
-                revealed_player = RevealedPlayer(name=round_player["name"],
-                                                 img_url=round_player.get("img_url"),
-                                                 basketball_reference_id=round_player["basketball_reference_id"])
-                if game["current_round"] == 5:
-                    game["game_over"] = True
-                else:
-                    game["current_round"] += 1
-            return GuessResponse(last_guess=False,
-                                 current_score= game["current_score"],
-                                 current_round=game["current_round"],
-                                 guesses_remaining=guesses_remaining,
-                                 game_over=game["game_over"],
-                                 revealed_player=revealed_player)
-    else:
+    if basketball_reference_id in round_player["guessed_ids"]:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT,
+                            detail= "player already guessed this round")
+    round_player["guessed_ids"].append(basketball_reference_id)
+    round_player["guesses_remaining"] -= 1
+    guesses_remaining = round_player["guesses_remaining"]
+
+    if round_player["basketball_reference_id"] == basketball_reference_id:
+        game["current_score"] += guesses_remaining + 1
+        return end_round(game, last_guess=True)
+    if guesses_remaining == 0:
+        return end_round(game, last_guess=False)
+    return GuessResponse(last_guess=False,
+                         current_score= game["current_score"],
+                         current_round=game["current_round"],
+                         guesses_remaining=guesses_remaining,
+                         game_over=game["game_over"])
+
+# give up on the current round: reveal the player, no points
+@router.post("/{game_id}/skip")
+def skip(game_id: str):
+    game = get_active_game(game_id)
+    return end_round(game, last_guess=False)
+
+def get_active_game(game_id: str) -> dict:
+    game = sessions.get(game_id, None)
+    if not game:
         raise HTTPException(status_code= status.HTTP_404_NOT_FOUND,
                             detail= "unable to find game_id in sessions")
+    if game["game_over"]:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail= "game associated with game_id is completed")
+    return game
+
+# reveal the current round's player and advance to the next round (or end the game after round 5)
+def end_round(game: dict, last_guess: bool) -> GuessResponse:
+    round_player = game[str(game["current_round"])]
+    revealed_player = RevealedPlayer(name=round_player["name"],
+                                     img_url=round_player.get("img_url"),
+                                     basketball_reference_id=round_player["basketball_reference_id"])
+    if game["current_round"] == 5:
+        game["game_over"] = True
+        guesses_remaining = round_player["guesses_remaining"]
+    else:
+        game["current_round"] += 1
+        guesses_remaining = game[str(game["current_round"])]["guesses_remaining"]
+    return GuessResponse(last_guess=last_guess,
+                         current_score= game["current_score"],
+                         current_round=game["current_round"],
+                         guesses_remaining=guesses_remaining,
+                         game_over=game["game_over"],
+                         revealed_player=revealed_player)
 
 def generate_game_id(length = 6):
     return ''.join(secrets.choice(string.ascii_uppercase + string.digits) for _ in range(length))
