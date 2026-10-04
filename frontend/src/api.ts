@@ -54,6 +54,14 @@ export async function guessPlayer(gameId: string, playerId: string): Promise<Gue
   return await res.json() as GuessResponse
 }
 
+export async function skipRound(gameId: string): Promise<GuessResponse> {
+  const res = await fetch(`${BASE}/game/${gameId}/skip`, { method: "POST" })
+  if (!res.ok) {
+      throw new Error()
+  }
+  return await res.json() as GuessResponse
+}
+
 export async function autocompletePlayers(query: string): Promise<AutocompleteResponse> {
   const res = await fetch(`${BASE}/players/?q=${encodeURIComponent(query)}`)
   if (!res.ok) {

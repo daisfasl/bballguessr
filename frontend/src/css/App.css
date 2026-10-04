@@ -194,10 +194,45 @@
     }
 }
 
+.GameScreen-status-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 0.75rem;
+}
+
 .GameScreen-hint {
-    margin: 0.75rem 0 0;
+    margin: 0;
     font-size: 0.92rem;
     color: var(--muted);
+}
+
+/* deliberately quieter than .btn: an exit, not a call to action */
+.GameScreen-giveup {
+    flex-shrink: 0;
+    /* pad the hit area without moving the text off the hint's baseline */
+    margin: -0.5rem -0.25rem;
+    padding: 0.5rem 0.25rem;
+    background: none;
+    border: none;
+    font: inherit;
+    font-size: 0.92rem;
+    color: var(--muted);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    cursor: pointer;
+}
+
+.GameScreen-giveup:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .GameScreen-giveup:hover:not(:disabled) {
+        color: var(--ink);
+    }
 }
 
 @keyframes pill-in {

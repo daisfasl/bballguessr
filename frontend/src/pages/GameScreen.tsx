@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { getGameState, getRoundStats, guessPlayer } from '../api'
+import { getGameState, getRoundStats, guessPlayer, skipRound } from '../api'
 import { ScoreHUD } from '../components/ScoreHUD'
 import { StatsTable } from '../components/StatsTable'
 import { PlayerAutocompleteInput } from '../components/PlayerAutocompleteInput'
 import { RoundReveal } from '../components/RoundReveal'
 import { CourtLines } from '../components/art/CourtLines'
 import { BallGlyph } from '../components/art/BallGlyph'
-import type { PlayerMatch, RevealedPlayer } from '../types'
+import type { GuessResponse, PlayerMatch, RevealedPlayer } from '../types'
 
 const TOTAL_ROUNDS = 5
 const TOTAL_GUESSES = 3
@@ -24,6 +24,7 @@ interface Hud {
 interface RoundResult {
     player: RevealedPlayer
     points: number
+    gaveUp: boolean
 }
 
 const pad = (n: number) => String(n).padStart(2, '0')
@@ -63,11 +64,12 @@ export function GameScreen() {
         }
     }, [gameId])
 
-    const handleGuess = async (match: PlayerMatch) => {
-        if (!gameId || !hud || submitting) return
+    // guessing and giving up both end in the same response shape; match is null for a give-up
+    const submit = async (request: () => Promise<GuessResponse>, match: PlayerMatch | null) => {
+        if (!hud || submitting) return
         setSubmitting(true)
         try {
-            const res = await guessPlayer(gameId, match.basketball_reference_id)
+            const res = await request()
             setHud({
                 score: res.current_score,
                 round: res.current_round,
@@ -75,10 +77,10 @@ export function GameScreen() {
                 gameOver: res.game_over,
             })
             if (res.revealed_player) {
-                const result = { player: res.revealed_player, points: res.current_score - hud.score }
+                const result = { player: res.revealed_player, points: res.current_score - hud.score, gaveUp: match === null }
                 setReveal(result)
                 setRecap((prev) => [...prev, result])
-            } else {
+            } else if (match) {
                 setWrongGuesses((prev) => [...prev, match])
             }
         } catch {
@@ -86,6 +88,14 @@ export function GameScreen() {
         } finally {
             setSubmitting(false)
         }
+    }
+
+    const handleGuess = (match: PlayerMatch) => {
+        if (gameId) submit(() => guessPlayer(gameId, match.basketball_reference_id), match)
+    }
+
+    const handleGiveUp = () => {
+        if (gameId) submit(() => skipRound(gameId), null)
     }
 
     const handleContinue = async () => {
@@ -164,6 +174,7 @@ export function GameScreen() {
                     <RoundReveal
                         player={reveal.player}
                         points={reveal.points}
+                        gaveUp={reveal.gaveUp}
                         isLastRound={hud.gameOver}
                         onContinue={handleContinue}
                     />
@@ -183,12 +194,23 @@ export function GameScreen() {
                                 busy={submitting}
                                 shakeKey={wrongGuesses.length}
                                 autoFocus={FOCUS_ON_LOAD}
+                                excludeIds={wrongGuesses.map((g) => g.basketball_reference_id)}
                             />
-                            <p className="GameScreen-hint" aria-live="polite">
-                                {wrongGuesses.length > 0
-                                    ? `Not him. ${hud.guessesRemaining} guess${hud.guessesRemaining === 1 ? '' : 'es'} left.`
-                                    : ' '}
-                            </p>
+                            <div className="GameScreen-status-row">
+                                <p className="GameScreen-hint" aria-live="polite">
+                                    {wrongGuesses.length > 0
+                                        ? `Not him. ${hud.guessesRemaining} guess${hud.guessesRemaining === 1 ? '' : 'es'} left.`
+                                        : ' '}
+                                </p>
+                                <button
+                                    type="button"
+                                    className="GameScreen-giveup"
+                                    onClick={handleGiveUp}
+                                    disabled={submitting}
+                                >
+                                    Give up
+                                </button>
+                            </div>
                         </div>
                     </>
                 )}

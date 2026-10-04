@@ -5,11 +5,12 @@ import type { RevealedPlayer } from '../types'
 interface RoundRevealProps {
     player: RevealedPlayer
     points: number
+    gaveUp: boolean
     isLastRound: boolean
     onContinue: () => void
 }
 
-export function RoundReveal({ player, points, isLastRound, onContinue }: RoundRevealProps) {
+export function RoundReveal({ player, points, gaveUp, isLastRound, onContinue }: RoundRevealProps) {
     const [ready, setReady] = useState(false)
     const continueRef = useRef<HTMLButtonElement>(null)
     const correct = points > 0
@@ -37,7 +38,7 @@ export function RoundReveal({ player, points, isLastRound, onContinue }: RoundRe
                             : <span className="pill">Missed</span>}
                         <h2 className="display RoundReveal-name">{player.name}</h2>
                         <p className="RoundReveal-caption">
-                            {correct ? `Got it on guess ${guessNumber}.` : 'Out of guesses.'}
+                            {correct ? `Got it on guess ${guessNumber}.` : gaveUp ? 'Gave up.' : 'Out of guesses.'}
                         </p>
                         <button ref={continueRef} type="button" className="btn" onClick={onContinue}>
                             {isLastRound ? 'See results' : 'Next round'}
