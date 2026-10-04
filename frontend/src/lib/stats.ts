@@ -33,3 +33,22 @@ export function pivotStats(statsJson: Record<string, Record<string, string | nul
 
     return { columns, rows }
 }
+
+// columns that read as words, not numbers — left-aligned in the table
+export const TEXT_COLUMNS = new Set(["Season", "Team", "Lg", "Pos", "Awards"])
+
+// bbref awards come as one comma-joined string, e.g. "MVP-3,AS,NBA1"
+export function splitAwards(raw: string | null): string[] {
+    if (!raw) return []
+    return raw.split(",").map((a) => a.trim()).filter(Boolean)
+}
+
+// bbref puts season notes like "Did not play - other pro league" into a stat column
+// with the rest of the row empty; returns that note, or null for a normal stat row
+export function rowNote(columns: string[], row: (string | null)[]): string | null {
+    for (let i = 0; i < columns.length; i++) {
+        const cell = row[i]
+        if (!TEXT_COLUMNS.has(columns[i]) && cell && /[a-z]{3,}/i.test(cell)) return cell
+    }
+    return null
+}
