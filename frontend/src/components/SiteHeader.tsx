@@ -15,7 +15,7 @@ export function SiteHeader() {
 
     return (
         <header className="SiteHeader">
-            <Link to="/" className="SiteHeader-wordmark">bballguessr</Link>
+            <Link to="/" className="SiteHeader-wordmark" translate="no">bballguessr</Link>
             <ThemeToggle />
         </header>
     )

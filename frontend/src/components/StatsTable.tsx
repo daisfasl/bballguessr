@@ -39,6 +39,7 @@ export function StatsTable({ statsJson }: StatsTableProps) {
             data-fade-end={!edges.end || undefined}
             onScroll={updateEdges}
             tabIndex={0}
+            role="region"
             aria-label="Career stats, per game"
         >
             <table className="StatsTable">

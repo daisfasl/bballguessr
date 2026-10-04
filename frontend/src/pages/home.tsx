@@ -1,10 +1,8 @@
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { HalftoneBall } from '../components/art/HalftoneBall'
 import { Crosshair } from '../components/Crosshair'
 
 export function Home() {
-    const navigate = useNavigate()
-
     return (
         <div className="page Home-page">
             <div className="Home-hero">
@@ -16,16 +14,14 @@ export function Home() {
                 </div>
             </div>
 
-            <h1 className="display Home-title">bballguessr</h1>
+            <h1 className="display Home-title" translate="no">bballguessr</h1>
             <p className="Home-desc">
                 Five NBA players. Only their basketball-reference stat lines to go on.
                 Three guesses each round.
             </p>
 
             <div className="Home-actions">
-                <button type="button" className="btn" onClick={() => navigate('/play')}>
-                    Quick play
-                </button>
+                <Link to="/play" className="btn">Quick play</Link>
                 <span className="Home-soon">
                     <button type="button" className="btn btn-ghost" disabled>
                         Create challenge
