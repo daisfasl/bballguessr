@@ -8,9 +8,11 @@ interface PlayerAutocompleteInputProps {
     // bump to shake the field (a wrong guess)
     shakeKey?: number
     autoFocus?: boolean
+    // players already guessed this round, left out of the suggestions
+    excludeIds?: string[]
 }
 
-export function PlayerAutocompleteInput({ onGuess, busy, shakeKey = 0, autoFocus }: PlayerAutocompleteInputProps) {
+export function PlayerAutocompleteInput({ onGuess, busy, shakeKey = 0, autoFocus, excludeIds = [] }: PlayerAutocompleteInputProps) {
     const [query, setQuery] = useState('')
     const [matches, setMatches] = useState<PlayerMatch[]>([])
     const [open, setOpen] = useState(false)
@@ -29,8 +31,9 @@ export function PlayerAutocompleteInput({ onGuess, busy, shakeKey = 0, autoFocus
         debounceRef.current = setTimeout(async () => {
             try {
                 const res = await autocompletePlayers(query.trim())
-                setMatches(res.players)
-                setActive(res.players.length > 0 ? 0 : -1)
+                const players = res.players.filter((p) => !excludeIds.includes(p.basketball_reference_id))
+                setMatches(players)
+                setActive(players.length > 0 ? 0 : -1)
                 setOpen(true)
             } catch {
                 setMatches([])
@@ -40,6 +43,8 @@ export function PlayerAutocompleteInput({ onGuess, busy, shakeKey = 0, autoFocus
         return () => {
             if (debounceRef.current) clearTimeout(debounceRef.current)
         }
+        // excludeIds only changes alongside a submitted guess, which also clears the query
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [query])
 
     useEffect(() => {
