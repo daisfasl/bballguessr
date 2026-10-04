@@ -13,7 +13,9 @@ if not DB_URL:
     raise ValueError("No DB_URL in .env")
 
 # set up sqlalchemy engine(database connection)/sessions
-engine = create_engine(DB_URL)
+# pool_pre_ping tests a pooled connection before use, so ones the remote db closed while idle
+# (psycopg2 "SSL connection has been closed unexpectedly") get replaced instead of raising a 500
+engine = create_engine(DB_URL, pool_pre_ping=True)
 SessionLocal = sessionmaker(autocommit = False, autoflush = False, bind = engine)
 ## autoflush = False as in case of crash, wont mess up scraper ##
 
