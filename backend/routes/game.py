@@ -80,10 +80,6 @@ def create_session(players) -> str:
 
     return game_id
 
-@router.get("/sessions")
-def get_sessions():
-    return sessions
-
 @router.get("/{game_id}")
 def get_game_state(game_id: str):
     game = sessions.get(game_id, None)
