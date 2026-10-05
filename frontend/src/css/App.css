@@ -22,11 +22,17 @@
 }
 
 .SiteHeader-githubText {
-    font-size: 0.85rem;
+    font-size: 0.78rem;
     color: var(--muted);
     text-decoration: underline;
     text-decoration-color: transparent;
     text-underline-offset: 0.2em;
+}
+
+.SiteHeader-star {
+    width: 0.95em;
+    height: 0.95em;
+    vertical-align: -0.1em;
 }
 
 @media (hover: hover) and (pointer: fine) {
