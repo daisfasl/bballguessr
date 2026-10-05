@@ -12,8 +12,28 @@
     padding: 1.25rem 1.5rem 0;
 }
 
-.SiteHeader-bare {
-    justify-content: flex-end;
+.SiteHeader-github {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    min-height: 2.25rem;
+    color: var(--ink);
+    text-decoration: none;
+}
+
+.SiteHeader-githubText {
+    font-size: 0.85rem;
+    color: var(--muted);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 0.2em;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .SiteHeader-github:hover .SiteHeader-githubText {
+        color: var(--ink);
+        text-decoration-color: currentColor;
+    }
 }
 
 .SiteHeader-wordmark {

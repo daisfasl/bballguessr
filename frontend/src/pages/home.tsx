@@ -31,8 +31,7 @@ export function Home() {
             </div>
 
             <p className="Home-credit">
-                Stats from <a href="https://www.basketball-reference.com" target="_blank" rel="noreferrer">Basketball-Reference.com</a>.
-                {' '}Source on <a href="https://github.com/daisfasl/bballguessr" target="_blank" rel="noreferrer">GitHub</a>.
+                Stats from <a href="https://www.basketball-reference.com" target="_blank" rel="noreferrer">Basketball-Reference.com</a>
             </p>
         </div>
     )
