@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import select, func
 from database import get_db
 from models import Player
-from schemas import GuessResponse, GameStateResponse, RoundStatsResponse, RevealedPlayer
+from schemas import GuessResponse, GameStateResponse, RoundStatsResponse, RevealedPlayer, Hint
 from typing import Literal
 import secrets 
 import string
@@ -86,10 +86,12 @@ def get_game_state(game_id: str):
     game = sessions.get(game_id, None)
     if game:
         curr_round =game.get("current_round")
+        round_player = game[str(curr_round)]
         return GameStateResponse(current_score= game.get("current_score"),
                                  current_round= curr_round,
-                                 guesses_remaining= game[str(curr_round)].get("guesses_remaining"),
-                                 game_over= game.get("game_over"))
+                                 guesses_remaining= round_player.get("guesses_remaining"),
+                                 game_over= game.get("game_over"),
+                                 hints= [] if game["game_over"] else round_hints(round_player))
     else:
         raise HTTPException(status_code= status.HTTP_404_NOT_FOUND,
                             detail= "unable to find game_id in sessions")
@@ -126,7 +128,8 @@ def guess(game_id: str, basketball_reference_id: str):
                          current_score= game["current_score"],
                          current_round=game["current_round"],
                          guesses_remaining=guesses_remaining,
-                         game_over=game["game_over"])
+                         game_over=game["game_over"],
+                         hints=round_hints(round_player))
 
 # give up on the current round: reveal the player, no points
 @router.post("/{game_id}/skip")
@@ -150,18 +153,39 @@ def end_round(game: dict, last_guess: bool) -> GuessResponse:
     revealed_player = RevealedPlayer(name=round_player["name"],
                                      img_url=round_player.get("img_url"),
                                      basketball_reference_id=round_player["basketball_reference_id"])
+    hints = []
     if game["current_round"] == 5:
         game["game_over"] = True
         guesses_remaining = round_player["guesses_remaining"]
     else:
         game["current_round"] += 1
-        guesses_remaining = game[str(game["current_round"])]["guesses_remaining"]
+        next_player = game[str(game["current_round"])]
+        guesses_remaining = next_player["guesses_remaining"]
+        hints = round_hints(next_player)
     return GuessResponse(last_guess=last_guess,
                          current_score= game["current_score"],
                          current_round=game["current_round"],
                          guesses_remaining=guesses_remaining,
                          game_over=game["game_over"],
-                         revealed_player=revealed_player)
+                         revealed_player=revealed_player,
+                         hints=hints)
+
+NAME_SUFFIXES = {"Jr.", "Sr.", "II", "III", "IV"}
+
+# one hint per wrong guess so far: initials after the first, letter blanks after the second
+def round_hints(round_player: dict) -> list[Hint]:
+    name = round_player["name"]
+    wrong_guesses = 3 - round_player["guesses_remaining"]
+    hints = []
+    if wrong_guesses >= 1:
+        # suffixes aren't really initials ("Gary Payton II" -> "G. P.")
+        words = [w for w in name.split() if w not in NAME_SUFFIXES]
+        hints.append(Hint(kind="initials", value=" ".join(f"{w[0].upper()}." for w in words)))
+    if wrong_guesses >= 2:
+        # letters become "_", punctuation stays so the shape isn't misleading ("O'Neal" -> "_'____")
+        blanks = ["".join("_" if c.isalpha() else c for c in w) for w in name.split()]
+        hints.append(Hint(kind="letters", value=" ".join(blanks)))
+    return hints
 
 def generate_game_id(length = 6):
     return ''.join(secrets.choice(string.ascii_uppercase + string.digits) for _ in range(length))

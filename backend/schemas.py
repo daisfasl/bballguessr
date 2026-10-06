@@ -22,6 +22,11 @@ class RevealedPlayer(BaseModel):
     img_url: str | None
     basketball_reference_id: str
 
+# a clue about the current round's player, unlocked by wrong guesses
+class Hint(BaseModel):
+    kind: Literal["initials", "letters"]
+    value: str
+
 class GuessResponse(BaseModel):
     last_guess: bool
     current_score: int
@@ -29,12 +34,14 @@ class GuessResponse(BaseModel):
     guesses_remaining: Literal[0,1,2,3]
     game_over: bool
     revealed_player: RevealedPlayer | None = None
+    hints: List[Hint] = []
 
 class GameStateResponse(BaseModel):
     current_score: int
     current_round: Literal[1,2,3,4,5]
     guesses_remaining: Literal[0,1,2,3]
     game_over: bool
+    hints: List[Hint] = []
 
 
 class RoundStatsResponse(BaseModel):
