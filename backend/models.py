@@ -32,4 +32,6 @@ class Player(Base):
                           default = 0)
     curated = Column(Boolean,
                      default = False)
+    # English Wikipedia article title, filled by scripts/sync_wikipedia_titles.py
+    wikipedia_title = Column(String(255))
 

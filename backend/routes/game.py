@@ -152,7 +152,8 @@ def end_round(game: dict, last_guess: bool) -> GuessResponse:
     round_player = game[str(game["current_round"])]
     revealed_player = RevealedPlayer(name=round_player["name"],
                                      img_url=round_player.get("img_url"),
-                                     basketball_reference_id=round_player["basketball_reference_id"])
+                                     basketball_reference_id=round_player["basketball_reference_id"],
+                                     wikipedia_title=round_player.get("wikipedia_title"))
     hints = []
     if game["current_round"] == 5:
         game["game_over"] = True

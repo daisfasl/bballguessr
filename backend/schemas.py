@@ -21,6 +21,7 @@ class RevealedPlayer(BaseModel):
     name: str
     img_url: str | None
     basketball_reference_id: str
+    wikipedia_title: str | None = None
 
 # a clue about the current round's player, unlocked by wrong guesses
 class Hint(BaseModel):
