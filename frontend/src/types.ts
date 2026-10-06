@@ -4,6 +4,7 @@ export interface RevealedPlayer {
     name: string
     img_url: string | null
     basketball_reference_id: string
+    wikipedia_title: string | null
 }
 
 export interface Hint {
