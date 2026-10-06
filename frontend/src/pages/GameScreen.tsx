@@ -5,9 +5,10 @@ import { ScoreHUD } from '../components/ScoreHUD'
 import { StatsTable } from '../components/StatsTable'
 import { PlayerAutocompleteInput } from '../components/PlayerAutocompleteInput'
 import { RoundReveal } from '../components/RoundReveal'
+import { RoundHints } from '../components/RoundHints'
 import { CourtLines } from '../components/art/CourtLines'
 import { BallGlyph } from '../components/art/BallGlyph'
-import type { GuessResponse, PlayerMatch, RevealedPlayer } from '../types'
+import type { GuessResponse, Hint, PlayerMatch, RevealedPlayer } from '../types'
 
 const TOTAL_ROUNDS = 5
 const TOTAL_GUESSES = 3
@@ -39,6 +40,7 @@ export function GameScreen() {
     const [reveal, setReveal] = useState<RoundResult | null>(null)
     const [recap, setRecap] = useState<RoundResult[]>([])
     const [wrongGuesses, setWrongGuesses] = useState<PlayerMatch[]>([])
+    const [hints, setHints] = useState<Hint[]>([])
     const [submitting, setSubmitting] = useState(false)
     const [error, setError] = useState(false)
 
@@ -54,6 +56,7 @@ export function GameScreen() {
                     guessesRemaining: state.guesses_remaining,
                     gameOver: state.game_over,
                 })
+                setHints(state.hints)
                 setStatsJson(stats.stats_json)
             })
             .catch(() => {
@@ -76,6 +79,7 @@ export function GameScreen() {
                 guessesRemaining: res.guesses_remaining,
                 gameOver: res.game_over,
             })
+            setHints(res.hints)
             if (res.revealed_player) {
                 const result = { player: res.revealed_player, points: res.current_score - hud.score, gaveUp: match === null }
                 setReveal(result)
@@ -182,6 +186,7 @@ export function GameScreen() {
                     <>
                         <StatsTable statsJson={statsJson} />
                         <div className="GameScreen-guess">
+                            <RoundHints hints={hints} />
                             {wrongGuesses.length > 0 && (
                                 <ul className="GameScreen-wrong" aria-label="Wrong guesses">
                                     {wrongGuesses.map((g, i) => (

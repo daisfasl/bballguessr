@@ -6,6 +6,11 @@ export interface RevealedPlayer {
     basketball_reference_id: string
 }
 
+export interface Hint {
+    kind: 'initials' | 'letters'
+    value: string
+}
+
 export interface GuessResponse {
     last_guess: boolean
     current_score: number
@@ -13,6 +18,7 @@ export interface GuessResponse {
     guesses_remaining: 0 | 1 | 2 | 3
     game_over: boolean
     revealed_player: RevealedPlayer | null
+    hints: Hint[]
 }
 
 export interface GameStateResponse {
@@ -20,6 +26,7 @@ export interface GameStateResponse {
     current_round: 1 | 2 | 3 | 4 | 5
     guesses_remaining: 0 | 1 | 2 | 3
     game_over: boolean
+    hints: Hint[]
 }
 
 // stats table from current_round
