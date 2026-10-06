@@ -8,10 +8,10 @@ interface ModeOption {
 }
 
 const MODES: ModeOption[] = [
-    { id: 'curated', name: 'Curated', count: '~470 players', blurb: 'Well-known players. The best place to start.' },
+    { id: 'curated', name: 'Curated', count: '~470 players', blurb: 'Well-known players. The recommended place to start.' },
     { id: 'all_stars', name: 'All-Stars', count: '536 players', blurb: 'Anyone with at least one All-Star season.' },
     { id: 'legends', name: 'Legends', count: '166 players', blurb: 'Five or more All-Star seasons. The most recognizable names.' },
-    { id: 'everyone', name: 'Everyone', count: '5,409 players', blurb: 'No filter at all. For the hardcore.' },
+    { id: 'everyone', name: 'Everyone', count: '5,409 players', blurb: 'No filter at all, basically impossible!' },
     { id: 'custom', name: 'Custom', count: '', blurb: 'Set your own career length, accolades and era.' },
 ]
 
