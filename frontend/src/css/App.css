@@ -335,10 +335,12 @@
 }
 
 /* ScoreHUD */
+/* equal outer columns keep the pips on the page's center line, under the reveal photo and name,
+   however wide the round and score labels are */
 .ScoreHUD {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    justify-content: space-between;
     padding: 0.5rem 0 1rem;
     border-bottom: 2px solid var(--ink);
 }
@@ -356,6 +358,7 @@
 }
 
 .ScoreHUD-score {
+    justify-self: end;
     color: var(--ink-2);
 }
 
