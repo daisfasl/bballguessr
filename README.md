@@ -4,7 +4,7 @@ Guess the NBA player from their career stat line.
 
 **Play at [bballguessr.com](https://bballguessr.com)**
 
-![bballguessr wordmark beside a halftone basketball](frontend/public/og.png)
+![A round of bballguessr: two wrong guesses unlock the initials and letter-blank hints, the third guess gets Yao Ming, and the reveal opens his Wikipedia summary](docs/demo.gif)
 
 ## How to play
 
