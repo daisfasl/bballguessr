@@ -7,3 +7,5 @@ env/
 __pycache__/
 *.pyc
 
+CLAUDE.md
+docs/frontend-redesign-plan.md
